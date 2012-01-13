@@ -1,6 +1,9 @@
-caja-python is written by
-Johan Dahlin <johan@gnome.org>
+caja-python is developed by:
+Perberos <perberos@gmail.com>
+Stefano Karapetsas <stefano@karapetsas.com>
+Steve Zesch <stevezesch2@gmail.com>
 
-Somewhat on caja-mono by:
+it is based on nautilus-python written by
+Johan Dahlin <johan@gnome.org>
 Dave Camp <dave@ximian.com>
 Calvin Gaisford <cgaisford@novell.com>
