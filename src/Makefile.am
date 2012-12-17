@@ -22,27 +22,3 @@ libcaja_python_la_SOURCES =     	\
 
 libcaja_python_la_LDFLAGS = -module -avoid-version
 libcaja_python_la_LIBADD  = $(CAJA_PYTHON_LIBS) $(PYTHON_LIBS)
-
-pyexec_LTLIBRARIES = caja.la
-pyexecdir = $(CAJA_LIBDIR)/caja-python
-
-caja_la_LDFLAGS = -module -avoid-version -export-symbols-regex initcaja
-caja_la_LIBADD = $(CAJA_PYTHON_LIBS)
-caja_la_SOURCES = cajamodule.c
-nodist_caja_la_SOURCES = caja.c
-caja.c: caja.defs caja.override
-CLEANFILES = caja.c
-EXTRA_DIST = caja.override caja.defs
-
-.defs.c:
-	(cd $(srcdir)\
-         && $(PYGTK_CODEGEN) \
-	    --register $(PYGTK_DEFSDIR)/pango-types.defs \
-            --register $(PYGTK_DEFSDIR)/gdk-types.defs \
-            --register $(PYGTK_DEFSDIR)/gtk-types.defs \
-            --register $(PYGOBJECT_DEFSDIR)/gio-types.defs \
-            --register $(PYGOBJECT_DEFSDIR)/unix-types.defs \
-            --override $*.override \
-            --prefix py$* $*.defs) > gen-$*.c \
-        && cp gen-$*.c $*.c \
-        && rm -f gen-$*.c
