@@ -76,4 +76,7 @@ PyTypeObject *_PyCajaPropertyPage_Type;
 PyTypeObject *_PyCajaPropertyPageProvider_Type;
 #define PyCajaPropertyPageProvider_Type (*_PyCajaPropertyPageProvider_Type)
 
+PyTypeObject *_PyCajaOperationHandle_Type;
+#define PyCajaOperationHandle_Type (*_PyCajaOperationHandle_Type)
+
 #endif /* CAJA_PYTHON_H */
