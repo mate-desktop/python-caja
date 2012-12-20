@@ -1,28 +1,37 @@
-import caja
+from gi.repository import Caja, GObject
 
-class ExampleMenuProvider(caja.MenuProvider):
-    
-    # Caja crashes if a plugin doesn't implement the __init__ method.
-    # See Bug #374958
+class ExampleMenuProvider(GObject.GObject, Caja.MenuProvider):
     def __init__(self):
         pass
         
     def get_file_items(self, window, files):
-        top_menuitem = caja.MenuItem('ExampleMenuProvider::Foo', 'Foo', '')
+        top_menuitem = Caja.MenuItem(name='ExampleMenuProvider::Foo', 
+                                         label='Foo', 
+                                         tip='',
+                                         icon='')
 
-        submenu = caja.Menu()
+        submenu = Caja.Menu()
         top_menuitem.set_submenu(submenu)
 
-        sub_menuitem = caja.MenuItem('ExampleMenuProvider::Bar', 'Bar', '')
+        sub_menuitem = Caja.MenuItem(name='ExampleMenuProvider::Bar', 
+                                         label='Bar', 
+                                         tip='',
+                                         icon='')
         submenu.append_item(sub_menuitem)
 
         return top_menuitem,
 
     def get_background_items(self, window, file):
-        submenu = caja.Menu()
-        submenu.append_item(caja.MenuItem('ExampleMenuProvider::Bar', 'Bar', ''))
+        submenu = Caja.Menu()
+        submenu.append_item(Caja.MenuItem(name='ExampleMenuProvider::Bar2', 
+                                         label='Bar2', 
+                                         tip='',
+                                         icon=''))
 
-        menuitem = caja.MenuItem('ExampleMenuProvider::Foo', 'Foo', '')
+        menuitem = Caja.MenuItem(name='ExampleMenuProvider::Foo2', 
+                                         label='Foo2', 
+                                         tip='',
+                                         icon='')
         menuitem.set_submenu(submenu)
 
         return menuitem,
