@@ -6,9 +6,9 @@
 
     <title>Overview</title>
 
-    <para>Writing a Caja-Python extension is a fairly straight-forward process. 
-    One simply imports the caja module and creates a class which is derived from a number 
-    of the caja module's classes. When an extension derives a class, it becomes a "provider", 
+    <para>Writing a Caja-Python extension is a fairly straight-forward process.
+    One simply imports the Caja module from the gobject introspection repository and creates a class which is derived from a gobject.GObject and 
+    one of the Caja module's classes. When an extension derives a class, it becomes a "provider", 
     telling Caja to ask it for information. There are several types of providers 
     available for extensions to use: there is MenuProvider, LocationWidgetProvider, 
     ColumnProvider, PropertyPageProvider, and InfoProvider, all of which will be explained 
@@ -16,19 +16,24 @@
     
     <para>Here are the basic steps:</para>
     
-    <para>1. A script is written and installed to the standard python extensions install path</para>
-    <para>2. Caja is (re)started and loads the Caja-Python C extension, which in turn loads all python extensions</para>
-    <para>3. Any python script in the standard python extensions install path that imports the caja module and derives 
-    the main class from a caja module class will be loaded</para>
+    <para>1. A script is written and installed to the standard caja-python extension install path</para>
+    <para>2. Caja is (re)started and loads the caja-python C extension, which in turn loads all python extensions it can find</para>
+    <para>3. Any python script in the standard caja-python extension install path that imports the Caja module from the gobject introspection repository and derives 
+    the main class from a Caja module class will be loaded</para>
     
     <note>
 <title>A note about the standard python extensions install path</title>
 
-<para>The install path for individual users is ~/.caja/python-extensions. </para>
-<para>The system-wide install path is $PREFIX/lib/caja/extensions-2.0/python. However, some 64 bit distributions, 
-such as Fedora, put Caja-Python extensions in $PREFIX/lib64/caja/extensions-2.0/python. </para>
-<para>As of caja-python 0.7.0, caja-python looks in ~/.local/share/caja-python/extensions 
+<para>As of caja-python 0.7.0 (and continued in 1.0+), caja-python looks in ~/.local/share/caja-python/extensions 
 for local extensions and $PREFIX/share/caja-python/extensions for global extensions.</para>
+    </note>
+    
+    <note>
+<title>A note about compatibility issues for caja-python 1.0</title>
+    <para>1. We no longer support the "import caja" command that previous versions used.  This is because
+    caja-python now directly uses Caja's annotations, which must be imported by the "from gi.repository import Caja" command.</para>
+    <para>2. The extension class must now derive itself from a gobject.GObject in addition to the standard Caja classes.</para>
+    <para>3. For now, some Caja class constructors require passing named arguments instead of a standard argument list.  This requirement may go away at some point.</para>
     </note>
 
     <xi:include href="caja-python-overview-example.xml"/>
