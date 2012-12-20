@@ -1,17 +1,17 @@
 import os
 import urllib
 
-import caja
+from gi.repository import GObject, Caja
 
-class ColumnExtension(caja.ColumnProvider, caja.InfoProvider):
+class ColumnExtension(GObject.GObject, Caja.ColumnProvider, Caja.InfoProvider):
     def __init__(self):
         pass
     
     def get_columns(self):
-        return caja.Column("CajaPython::block_size_column",
-                               "block_size",
-                               "Block size",
-                               "Get the block size"),
+        return Caja.Column(name="CajaPython::block_size_column",
+                               attribute="block_size",
+                               label="Block size",
+                               description="Get the block size"),
 
     def update_file_info(self, file):
         if file.get_uri_scheme() != 'file':
