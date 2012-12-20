@@ -11,49 +11,43 @@
     <example>
         <title>A Simple Extension</title>
         <programlisting>
-import caja
+from gi.repository import Caja, GObject
 
-class SimpleMenuExtension(caja.MenuProvider):
-def __init__(self):
-    pass
+class ColumnExtension(GObject.GObject, Caja.MenuProvider):
+    def __init__(self):
+        pass
 
-def menu_activate_cb(self, menu, file):
-    print "menu_activate_cb",file
+    def menu_activate_cb(self, menu, file):
+        print "menu_activate_cb",file
 
-def get_file_items(self, window, files):
-    if len(files) != 1:
-        return
-    
-    file = files[0]
+    def get_file_items(self, window, files):
+        if len(files) != 1:
+            return
+        
+        file = files[0]
 
-    item = caja.MenuItem(
-        "SimpleMenuExtension::Show_File_Name",
-        "Showing %s" % file.get_name(),
-        "Showing %s" % file.get_name()
-    )
-    item.connect('activate', self.menu_activate_cb, file)
-    
-    return [item]</programlisting>
+        item = Caja.MenuItem(
+            name="SimpleMenuExtension::Show_File_Name",
+            label="Showing %s" % file.get_name(),
+            tip="Showing %s" % file.get_name()
+        )
+        item.connect('activate', self.menu_activate_cb, file)
+        
+        return [item]</programlisting>
     </example>
     
-    <para>Save this file as TestExtension.py in the ~/.caja/python-extensions folder. 
-    You may need to create this folder. To run, open the terminal and type:</para>
-    
-    <informalexample>
-        <programlisting>
-$ caja -q
-$ caja --no-desktop</programlisting>
-    </informalexample>
+    <para>Save this file as TestExtension.py in the ~/.local/share/caja-python/extensions folder. 
+    You may need to create this folder. To run, simply restart Caja.</para>
 
-    <para>Once Caja starts, right-click on a file and you should see a new menu item, 
+    <para>Once Caja restarts, right-click on a file and you should see a new menu item, 
     "Showing #filename#". It is as simple as that!</para>
     
     <para>As mentioned above, in order to 
-    get loaded by Caja, a python extension must import the caja module, 
-    create a class derived from a caja *Provider, then create the methods that 
+    get loaded by Caja, a python extension must import the Caja module from gi.repository, 
+    create a class derived from a caja *Provider and a gobject.GObject, and create the methods that 
     will be called by Caja when it requests information from its providers. 
     In this case, when someone right-clicks on a file, Caja will ask all of its 
     MenuProviders for additional menu items to show the user. When folders or files are clicked, 
-    the get_file_items method is called and a list of caja.MenuItems is expected.</para>
+    the get_file_items method is called and a list of Caja.MenuItems is expected.</para>
 
 </chapter>

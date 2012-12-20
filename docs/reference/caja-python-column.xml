@@ -4,8 +4,8 @@
 
 <refentry id="class-caja-python-column">
   <refnamediv>
-    <refname>caja.Column</refname>
-    <refpurpose>caja.Column Reference</refpurpose>
+    <refname>Caja.Column</refname>
+    <refpurpose>Caja.Column Reference</refpurpose>
   </refnamediv>
 
 <!-- ******************************* -->
@@ -16,11 +16,11 @@
     <title>Synopsis</title>
 
     <classsynopsis language="python">
-        <ooclass><classname>caja.Column</classname></ooclass>
+        <ooclass><classname>Caja.Column</classname></ooclass>
         <ooclass><classname><link linkend="class-gobject">gobject.GObject</link></classname></ooclass>
 
         <constructorsynopsis language="python">
-            <methodname><link linkend="constructor-caja-column">caja.Column</link></methodname>
+            <methodname><link linkend="constructor-caja-column">Caja.Column</link></methodname>
             <methodparam><parameter role="keyword">name</parameter></methodparam>
             <methodparam><parameter role="keyword">attribute</parameter></methodparam>
             <methodparam><parameter role="keyword">label</parameter></methodparam>
@@ -37,7 +37,7 @@
     <title>Ancestry</title>
 
 <synopsis>+-- <link linkend="class-gobject">gobject.GObject</link>
-    +-- <link linkend="class-caja-python-column">caja.Column</link>
+    +-- <link linkend="class-caja-python-column">Caja.Column</link>
 </synopsis>
 </refsect1>
 
@@ -50,7 +50,7 @@
     <title>Description</title>
 
       <para>
-        A list of <link linkend="class-caja-python-column"><classname>caja.Column</classname></link> objects is returned by <link linkend="class-caja-python-column-provider"><classname>caja.ColumnProvider</classname></link> extensions.
+        A list of <link linkend="class-caja-python-column"><classname>Caja.Column</classname></link> objects is returned by <link linkend="class-caja-python-column-provider"><classname>Caja.ColumnProvider</classname></link> extensions.
       </para>
 
   </refsect1>
@@ -122,7 +122,7 @@
   <title>Constructor</title>
 
   <programlisting><constructorsynopsis language="python">
-        <methodname>caja.Column</methodname>
+        <methodname>Caja.Column</methodname>
         <methodparam><parameter role="keyword">name</parameter></methodparam>
         <methodparam><parameter role="keyword">attribute</parameter></methodparam>
         <methodparam><parameter role="keyword">label</parameter></methodparam>
@@ -149,7 +149,7 @@
   </variablelist>
 
   <para>
-    Creates a new <link linkend="class-caja-python-column"><classname>caja.Column</classname></link> object.
+    Creates a new <link linkend="class-caja-python-column"><classname>Caja.Column</classname></link> object.
   </para>
 </refsect1>
 
