@@ -128,6 +128,17 @@ free_pygobject_data_list(GList *list)
 	g_list_foreach(list, (GFunc)free_pygobject_data, NULL);
 }
 
+static PyObject *
+caja_python_boxed_new (PyTypeObject *type, gpointer boxed, gboolean free_on_dealloc)
+{
+	PyGBoxed *self = (PyGBoxed *) type->tp_alloc (type, 0);
+	self->gtype = pyg_type_from_object ( (PyObject *) type);
+	self->boxed = boxed;
+	self->free_on_dealloc = free_on_dealloc;
+	
+	return (PyObject *) self;
+}
+
 #define METHOD_NAME "get_property_pages"
 static GList *
 caja_python_object_get_property_pages (CajaPropertyPageProvider *provider,
@@ -149,7 +160,7 @@ caja_python_object_get_property_pages (CajaPropertyPageProvider *provider,
 								 "(N)", py_files);
 	HANDLE_RETVAL(py_ret);
 
-	HANDLE_LIST(py_ret, CajaPropertyPage, "caja.PropertyPage");
+	HANDLE_LIST(py_ret, CajaPropertyPage, "Caja.PropertyPage");
 	
  beach:
 	Py_XDECREF(py_ret);
@@ -222,7 +233,6 @@ caja_python_object_get_file_items (CajaMenuProvider *provider,
     GList *ret = NULL;
     PyObject *py_ret = NULL, *py_files;
 	PyGILState_STATE state = pyg_gil_state_ensure();
-	PyObject *provider_version = NULL;
 	
   	debug_enter();
 
@@ -252,7 +262,7 @@ caja_python_object_get_file_items (CajaMenuProvider *provider,
 
 	HANDLE_RETVAL(py_ret);
 
-	HANDLE_LIST(py_ret, CajaMenuItem, "caja.MenuItem");
+	HANDLE_LIST(py_ret, CajaMenuItem, "Caja.MenuItem");
 
  beach:
  	free_pygobject_data_list(files);
@@ -299,57 +309,10 @@ caja_python_object_get_background_items (CajaMenuProvider *provider,
 
 	HANDLE_RETVAL(py_ret);
 
-	HANDLE_LIST(py_ret, CajaMenuItem, "caja.MenuItem");
+	HANDLE_LIST(py_ret, CajaMenuItem, "Caja.MenuItem");
 	
  beach:
 	free_pygobject_data(file, NULL);
-	Py_XDECREF(py_ret);
-	pyg_gil_state_release(state);
-    return ret;
-}
-#undef METHOD_NAME
-
-#define METHOD_NAME "get_toolbar_items"
-static GList *
-caja_python_object_get_toolbar_items (CajaMenuProvider *provider,
-										  GtkWidget 		   *window,
-										  CajaFileInfo 	   *file)
-{
-	CajaPythonObject *object = (CajaPythonObject*)provider;
-    GList *ret = NULL;
-    PyObject *py_ret = NULL;
-	PyGILState_STATE state = pyg_gil_state_ensure();
-	
-  	debug_enter();
-  	
-	CHECK_OBJECT(object);
-
-	if (PyObject_HasAttrString(object->instance, "get_toolbar_items_full"))
-	{
-		py_ret = PyObject_CallMethod(object->instance, METHOD_PREFIX "get_toolbar_items_full",
-									 "(NNN)",
-									 pygobject_new((GObject *)provider),
-									 pygobject_new((GObject *)window),
-									 pygobject_new((GObject *)file));
-	}
-	else if (PyObject_HasAttrString(object->instance, "get_toolbar_items"))
-	{
-		py_ret = PyObject_CallMethod(object->instance, METHOD_PREFIX METHOD_NAME,
-									 "(NN)",
-									 pygobject_new((GObject *)window),
-									 pygobject_new((GObject *)file));
-	}
-	else
-	{
-		goto beach;
-	}
-	
-	HANDLE_RETVAL(py_ret);
-
-	HANDLE_LIST(py_ret, CajaMenuItem, "caja.MenuItem");
-	
- beach:
- 	free_pygobject_data(file, NULL);
 	Py_XDECREF(py_ret);
 	pyg_gil_state_release(state);
     return ret;
@@ -360,7 +323,6 @@ static void
 caja_python_object_menu_provider_iface_init (CajaMenuProviderIface *iface)
 {
 	iface->get_background_items = caja_python_object_get_background_items;
-	iface->get_toolbar_items = caja_python_object_get_toolbar_items;
 	iface->get_file_items = caja_python_object_get_file_items;
 }
 
@@ -370,7 +332,7 @@ caja_python_object_get_columns (CajaColumnProvider *provider)
 {
 	CajaPythonObject *object = (CajaPythonObject*)provider;
     GList *ret = NULL;
-    PyObject *py_ret;
+    PyObject *py_ret = NULL;
 	PyGILState_STATE state = pyg_gil_state_ensure();                                    \
 
 	debug_enter();
@@ -383,10 +345,11 @@ caja_python_object_get_columns (CajaColumnProvider *provider)
 
 	HANDLE_RETVAL(py_ret);
 
-	HANDLE_LIST(py_ret, CajaColumn, "caja.Column");
+	HANDLE_LIST(py_ret, CajaColumn, "Caja.Column");
 	
  beach:
- 	Py_XDECREF(py_ret);
+	if (py_ret != NULL)
+		Py_XDECREF(py_ret);
 	pyg_gil_state_release(state);
     return ret;
 }
@@ -406,6 +369,7 @@ caja_python_object_cancel_update (CajaInfoProvider 		*provider,
 {
 	CajaPythonObject *object = (CajaPythonObject*)provider;
 	PyGILState_STATE state = pyg_gil_state_ensure();
+	PyObject *py_handle = caja_python_boxed_new (_PyCajaOperationHandle_Type, handle, FALSE);
 
   	debug_enter();
 
@@ -415,7 +379,7 @@ caja_python_object_cancel_update (CajaInfoProvider 		*provider,
     PyObject_CallMethod(object->instance,
 								 METHOD_PREFIX METHOD_NAME, "(NN)",
 								 pygobject_new((GObject*)provider),
-								 pyg_pointer_new(G_TYPE_POINTER, handle));
+								 py_handle);
 
  beach:
 	pyg_gil_state_release(state);
@@ -432,7 +396,8 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
 	CajaPythonObject *object = (CajaPythonObject*)provider;
     CajaOperationResult ret = CAJA_OPERATION_COMPLETE;
     PyObject *py_ret = NULL;
-	PyGILState_STATE state = pyg_gil_state_ensure();                                    \
+	PyGILState_STATE state = pyg_gil_state_ensure();
+	PyObject *py_handle = caja_python_boxed_new (_PyCajaOperationHandle_Type, *handle, FALSE);
 
   	debug_enter();
 
@@ -443,7 +408,7 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
 		py_ret = PyObject_CallMethod(object->instance,
 									 METHOD_PREFIX "update_file_info_full", "(NNNN)",
 									 pygobject_new((GObject*)provider),
-									 pyg_pointer_new(G_TYPE_POINTER, *handle),
+									 py_handle,
 									 pyg_boxed_new(G_TYPE_CLOSURE, update_complete, TRUE, TRUE),
 									 pygobject_new((GObject*)file));
 	}
