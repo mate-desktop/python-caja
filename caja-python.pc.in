@@ -4,4 +4,4 @@ Version: @VERSION@
 
 prefix=@prefix@
 libdir=${prefix}/lib
-pythondir=@CAJA_EXTENSION_DIR@/python
+pythondir=@datadir@/caja-python/extensions
