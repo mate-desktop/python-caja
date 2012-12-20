@@ -260,15 +260,6 @@ caja_module_initialize(GTypeModule *module)
 	user_extensions_dir = g_build_filename(g_get_user_data_dir(), 
 		"caja-python", "extensions", NULL);
 	caja_python_load_dir(module, user_extensions_dir);
-
-	// Look in the old local path, ~/.caja/python-extensions
-	user_extensions_dir = g_build_filename(g_get_home_dir(),
-		".caja", "python-extensions", NULL);
-	caja_python_load_dir(module, user_extensions_dir);
-	g_free(user_extensions_dir);
-
-	// Look in the old global path, /usr/lib(64)/caja/extensions-2.0/python
-	caja_python_load_dir(module, CAJA_EXTENSION_DIR "/python");
 }
  
 void
