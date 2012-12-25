@@ -1,12 +1,11 @@
-import caja
-import gtk
+from gi.repository import Caja, Gtk, GObject
 
-class LocationProviderExample(caja.LocationWidgetProvider):
+class LocationProviderExample(GObject.GObject, Caja.LocationWidgetProvider):
     def __init__(self):
         pass
     
     def get_widget(self, uri, window):
-        entry = gtk.Entry()
+        entry = Gtk.Entry()
         entry.set_text(uri)
         entry.show()
         return entry

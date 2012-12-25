@@ -23,7 +23,8 @@
 
 #include <Python.h>
 #include <pygobject.h>
-#include <pygtk/pygtk.h>
+#include <gmodule.h>
+#include <gtk/gtk.h>
 
 #include "caja-python.h"
 #include "caja-python-object.h"
@@ -44,72 +45,15 @@ static GArray *all_types = NULL;
 static inline gboolean 
 np_init_pygobject(void)
 {
-    PyObject *gobject = PyImport_ImportModule("gobject");
-    if (gobject != NULL)
-    {
-        PyObject *mdict = PyModule_GetDict(gobject);
-        PyObject *cobject = PyDict_GetItemString(mdict, "_PyGObject_API");
-        if (PyCObject_Check(cobject))
-        {
-            _PyGObject_API = (struct _PyGObject_Functions *)PyCObject_AsVoidPtr(cobject);
-        }
-        else
-        {
-            PyErr_SetString(PyExc_RuntimeError,
-                            "could not find _PyGObject_API object");
-			PyErr_Print();
-			return FALSE;
-        }
-    }
-    else
-    {
-        PyErr_Print();
-        g_warning("could not import gobject");
+    PyObject *gobject = pygobject_init (PYGOBJECT_MAJOR_VERSION, PYGOBJECT_MINOR_VERSION, PYGOBJECT_MICRO_VERSION);
+
+    if (gobject == NULL) {
+        PyErr_Print ();
         return FALSE;
     }
+
 	return TRUE;
 }
-
-static inline gboolean 
-np_init_pygtk(void)
-{
-    PyObject *pygtk = PyImport_ImportModule("gtk._gtk");
-    if (pygtk != NULL)
-    {
-#ifdef Py_CAPSULE_H
-		void *capsule = PyCapsule_Import("gtk._gtk._PyGtk_API", 0);
-		if (capsule)
-		{
-			_PyGtk_API = (struct _PyGtk_FunctionStruct*)capsule;
-		}
-#endif
-		if (!_PyGtk_API)
-		{
-			PyObject *module_dict = PyModule_GetDict(pygtk);
-			PyObject *cobject = PyDict_GetItemString(module_dict, "_PyGtk_API");
-			if (PyCObject_Check(cobject))
-			{
-				_PyGtk_API = (struct _PyGtk_FunctionStruct*)
-					PyCObject_AsVoidPtr(cobject);
-			}
-			else
-			{
-				PyErr_SetString(PyExc_RuntimeError,
-				                "could not find _PyGtk_API object");
-				PyErr_Print();
-				return FALSE;
-			}
-		}
-    }
-    else
-    {
-        PyErr_Print();
-        g_warning("could not import gtk._gtk");
-        return FALSE;
-    }
-	return TRUE;
-}
-
 
 static void
 caja_python_load_file(GTypeModule *type_module, 
@@ -193,6 +137,7 @@ caja_python_load_dir (GTypeModule *module,
 				{
 					g_warning("caja_python_init_python failed");
 					g_dir_close(dir);
+					break;
 				}
 				
 				/* sys.path.insert(0, dirname) */
@@ -209,18 +154,11 @@ caja_python_load_dir (GTypeModule *module,
 static gboolean
 caja_python_init_python (void)
 {
-	PyObject *pygtk, *mdict, *require;
-	PyObject *sys_path, *tmp, *caja, *gtk, *pygtk_version, *pygtk_required_version;
-	GModule *libpython;
+	PyObject *caja;
 	char *argv[] = { "caja", NULL };
 
 	if (Py_IsInitialized())
 		return TRUE;
-
-  	debug("g_module_open " PY_LIB_LOC "/libpython" PYTHON_VERSION "." G_MODULE_SUFFIX ".1.0");
-	libpython = g_module_open(PY_LIB_LOC "/libpython" PYTHON_VERSION "." G_MODULE_SUFFIX ".1.0", 0);
-	if (!libpython)
-		g_warning("g_module_open libpython failed: %s", g_module_error());
 
 	debug("Py_Initialize");
 	Py_Initialize();
@@ -246,23 +184,6 @@ caja_python_init_python (void)
 		return FALSE;
 	}
 
-	/* pygtk.require("2.0") */
-	debug("pygtk.require(\"2.0\")");
-	pygtk = PyImport_ImportModule("pygtk");
-	if (!pygtk)
-	{
-		PyErr_Print();
-		return FALSE;
-	}
-	mdict = PyModule_GetDict(pygtk);
-	require = PyDict_GetItemString(mdict, "require");
-	PyObject_CallObject(require, Py_BuildValue("(S)", PyString_FromString("2.0")));
-	if (PyErr_Occurred())
-	{
-		PyErr_Print();
-		return FALSE;
-	}
-
 	/* import gobject */
   	debug("init_pygobject");
 	if (!np_init_pygobject())
@@ -271,59 +192,21 @@ caja_python_init_python (void)
 		return FALSE;
 	}
 	
-	/* import gtk */
-	debug("init_pygtk");
-	if (!np_init_pygtk())
-	{
-		g_warning("pygtk initialization failed");
-		return FALSE;
-	}
-	
-	/* gobject.threads_init() */
-    debug("pyg_enable_threads");
-	setenv("PYGTK_USE_GIL_STATE_API", "", 0);
-	pyg_enable_threads();
-
-	/* gtk.pygtk_version < (2, 4, 0) */
-	gtk = PyImport_ImportModule("gtk");
-	mdict = PyModule_GetDict(gtk);
-	pygtk_version = PyDict_GetItemString(mdict, "pygtk_version");
-	pygtk_required_version = Py_BuildValue("(iii)", 2, 4, 0);
-	if (PyObject_Compare(pygtk_version, pygtk_required_version) == -1)
-	{
-		g_warning("PyGTK %s required, but %s found.",
-				  PyString_AsString(PyObject_Repr(pygtk_required_version)),
-				  PyString_AsString(PyObject_Repr(pygtk_version)));
-		Py_DECREF(pygtk_required_version);
-		return FALSE;
-	}
-	Py_DECREF(pygtk_required_version);
-	
-	/* sys.path.insert(., ...) */
-	debug("sys.path.insert(0, ...)");
-	sys_path = PySys_GetObject("path");
-	PyList_Insert(sys_path, 0,
-				  (tmp = PyString_FromString(CAJA_LIBDIR "/caja-python")));
-	Py_DECREF(tmp);
-	
 	/* import caja */
 	g_setenv("INSIDE_CAJA_PYTHON", "", FALSE);
 	debug("import caja");
-	caja = PyImport_ImportModule("caja");
+	caja = PyImport_ImportModule("gi.repository.Caja");
 	if (!caja)
 	{
 		PyErr_Print();
 		return FALSE;
 	}
 
-	/* Extract types and interfaces from caja */
-	mdict = PyModule_GetDict(caja);
-	
 	_PyGtkWidget_Type = pygobject_lookup_class(GTK_TYPE_WIDGET);
 	g_assert(_PyGtkWidget_Type != NULL);
 
 #define IMPORT(x, y) \
-    _PyCaja##x##_Type = (PyTypeObject *)PyDict_GetItemString(mdict, y); \
+    _PyCaja##x##_Type = (PyTypeObject *)PyObject_GetAttrString(caja, y); \
 	if (_PyCaja##x##_Type == NULL) { \
 		PyErr_Print(); \
 		return FALSE; \
@@ -338,6 +221,7 @@ caja_python_init_python (void)
 	IMPORT(MenuProvider, "MenuProvider");
 	IMPORT(PropertyPage, "PropertyPage");
 	IMPORT(PropertyPageProvider, "PropertyPageProvider");
+	IMPORT(OperationHandle, "OperationHandle");
 
 #undef IMPORT
 	
@@ -370,15 +254,6 @@ caja_module_initialize(GTypeModule *module)
 	user_extensions_dir = g_build_filename(g_get_user_data_dir(), 
 		"caja-python", "extensions", NULL);
 	caja_python_load_dir(module, user_extensions_dir);
-
-	// Look in the old local path, ~/.caja/python-extensions
-	user_extensions_dir = g_build_filename(g_get_home_dir(),
-		".caja", "python-extensions", NULL);
-	caja_python_load_dir(module, user_extensions_dir);
-	g_free(user_extensions_dir);
-
-	// Look in the old global path, /usr/lib(64)/caja/extensions-2.0/python
-	caja_python_load_dir(module, CAJA_EXTENSION_DIR "/python");
 }
  
 void

@@ -4,8 +4,8 @@
 
 <refentry id="class-caja-python-menu">
   <refnamediv>
-    <refname>caja.Menu</refname>
-    <refpurpose>caja.Menu Reference</refpurpose>
+    <refname>Caja.Menu</refname>
+    <refpurpose>Caja.Menu Reference</refpurpose>
   </refnamediv>
 
 <!-- ******************************* -->
@@ -16,11 +16,11 @@
     <title>Synopsis</title>
 
     <classsynopsis language="python">
-        <ooclass><classname>caja.Menu</classname></ooclass>
+        <ooclass><classname>Caja.Menu</classname></ooclass>
         <ooclass><classname><link linkend="class-gobject">gobject.GObject</link></classname></ooclass>
 
         <constructorsynopsis language="python">
-            <methodname><link linkend="constructor-caja-menu">caja.Menu</link></methodname>
+            <methodname><link linkend="constructor-caja-menu">Caja.Menu</link></methodname>
         </constructorsynopsis>
 
         <methodsynopsis language="python">
@@ -43,7 +43,7 @@
     <title>Ancestry</title>
 
 <synopsis>+-- <link linkend="class-gobject">gobject.GObject</link>
-    +-- <link linkend="class-caja-python-menu">caja.Menu</link>
+    +-- <link linkend="class-caja-python-menu">Caja.Menu</link>
 </synopsis>
 </refsect1>
 
@@ -56,7 +56,7 @@
     <title>Description</title>
 
       <para>
-      A caja.Menu object allows an extension to create sub-menus.
+      A Caja.Menu object allows an extension to create sub-menus.
       </para>
 
   </refsect1>
@@ -71,11 +71,11 @@
   <title>Constructor</title>
 
   <programlisting><constructorsynopsis language="python">
-        <methodname>caja.Menu</methodname>
+        <methodname>Caja.Menu</methodname>
   </constructorsynopsis></programlisting>
     
   <para>
-    Creates a new <link linkend="class-caja-python-menu"><classname>caja.Menu</classname></link> object.
+    Creates a new <link linkend="class-caja-python-menu"><classname>Caja.Menu</classname></link> object.
   </para>
 </refsect1>
 
@@ -89,7 +89,7 @@
     <title>Public Methods</title>
 
   <refsect2 id="method-caja-python-menu--append_item">
-    <title>caja.Menu.append_item</title>
+    <title>Caja.Menu.append_item</title>
     <programlisting><methodsynopsis language="python">
 	  <methodname>append_item</methodname>
       <methodparam><parameter role="keyword">item</parameter></methodparam>
@@ -97,22 +97,22 @@
     <variablelist>
       <varlistentry>
         <term><parameter role="keyword">item</parameter>&nbsp;:</term>
-        <listitem><simpara>a <link linkend="class-caja-python-menu-item"><classname>caja.MenuItem</classname></link></simpara></listitem>
+        <listitem><simpara>a <link linkend="class-caja-python-menu-item"><classname>Caja.MenuItem</classname></link></simpara></listitem>
       </varlistentry>
     </variablelist>
 
     <para>
-      Append a <link linkend="class-caja-python-menu-item"><classname>caja.MenuItem</classname></link> to a <link linkend="class-caja-python-menu"><classname>caja.Menu</classname></link>.
+      Append a <link linkend="class-caja-python-menu-item"><classname>Caja.MenuItem</classname></link> to a <link linkend="class-caja-python-menu"><classname>Caja.Menu</classname></link>.
     </para>
   </refsect2>
 
   <refsect2 id="method-caja-python-menu--get_items">
-    <title>caja.Menu.get_items</title>
+    <title>Caja.Menu.get_items</title>
     <programlisting><methodsynopsis language="python">
 	  <methodname>get_items</methodname>
     </methodsynopsis></programlisting>
     <para>
-      Returns a list of <link linkend="class-caja-python-menu-item"><classname>caja.MenuItem</classname></link> objects attached to the <link linkend="class-caja-python-menu"><classname>caja.Menu</classname></link>.
+      Returns a list of <link linkend="class-caja-python-menu-item"><classname>Caja.MenuItem</classname></link> objects attached to the <link linkend="class-caja-python-menu"><classname>Caja.Menu</classname></link>.
     </para>
   </refsect2>
 </refsect1>

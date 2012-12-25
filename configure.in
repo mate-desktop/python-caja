@@ -1,7 +1,8 @@
+AC_PREREQ(2.60)
 AC_INIT
 
 PACKAGE=caja-python
-VERSION=1.4.0
+VERSION=1.5.0
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
@@ -13,8 +14,6 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_SUBST(ACLOCAL_AMFLAGS, "-I m4 -I .")
 
 CAJA_REQUIRED=1.1.0
-PYGTK_REQUIRED=2.8.0
-PYGOBJECT_REQUIRED=2.16.0
 
 AC_PROG_CC
 AC_DISABLE_STATIC
@@ -40,34 +39,28 @@ dnl **************************************************
 AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
 AM_CHECK_PYTHON_LIBS(,[AC_MSG_ERROR(could not find Python lib)])
 
+if test "`pkg-config --variable=datadir pygobject-3.0`" != "" ; then
+    PYGOBJECT_VERSION=pygobject-3.0
+    PYGOBJECT_MAJOR_VERSION=3
+    PYGOBJECT_MINOR_VERSION=0
+    PYGOBJECT_MICRO_VERSION=0
+else
+    PYGOBJECT_VERSION=pygobject-2.0
+    PYGOBJECT_MAJOR_VERSION=2
+    PYGOBJECT_MINOR_VERSION=28
+    PYGOBJECT_MICRO_VERSION=2
+fi
 
-PKG_CHECK_MODULES(CAJA_PYTHON, [pygtk-2.0 >= $PYGTK_REQUIRED
-                                   pygobject-2.0 >= $PYGOBJECT_REQUIRED
-                                   libcaja-extension >= $CAJA_REQUIRED])
+PYGOBJECT_REQUIRED=$PYGOBJECT_MAJOR_VERSION.$PYGOBJECT_MINOR_VERSION.$PYGOBJECT_MICRO_VERSION
+AC_DEFINE_UNQUOTED(PYGOBJECT_MAJOR_VERSION,[$PYGOBJECT_MAJOR_VERSION], [PyGObject major version.])
+AC_DEFINE_UNQUOTED(PYGOBJECT_MINOR_VERSION,[$PYGOBJECT_MINOR_VERSION], [PyGObject minor version.])
+AC_DEFINE_UNQUOTED(PYGOBJECT_MICRO_VERSION,[$PYGOBJECT_MICRO_VERSION], [PyGObject micro version.])
 
-AC_MSG_CHECKING(for pygtk defs)
-PYGTK_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygtk-2.0`
-AC_SUBST(PYGTK_DEFSDIR)
-AC_MSG_RESULT($PYGTK_DEFSDIR)
+PKG_CHECK_MODULES(CAJA_PYTHON, [$PYGOBJECT_VERSION >= $PYGOBJECT_REQUIRED
+                                libcaja-extension >= $CAJA_REQUIRED])
 
-AC_MSG_CHECKING(for pygtk codegen)
-PYGTK_CODEGEN="$PYTHON `$PKG_CONFIG --variable=codegendir pygtk-2.0`/codegen.py"
-AC_SUBST(PYGTK_CODEGEN)
-AC_MSG_RESULT($PYGTK_CODEGEN)
-
-AC_MSG_CHECKING(for pygobject defs)
-PYGOBJECT_DEFSDIR=`$PKG_CONFIG --variable=defsdir pygobject-2.0`
-AC_SUBST(PYGOBJECT_DEFSDIR)
-AC_MSG_RESULT($PYGOBJECT_DEFSDIR)
-
-PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir pygobject-2.0`
+PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir $PYGOBJECT_VERSION`
 AC_SUBST(PYGOBJECT_DATADIR)
-
-PYGOBJECT_PYGDOCS="`$PKG_CONFIG --variable=pygdocs pygobject-2.0`"
-AC_SUBST(PYGOBJECT_PYGDOCS)
-
-PYGOBJECT_FIXXREF="$PYTHON `$PKG_CONFIG --variable=fixxref pygobject-2.0`"
-AC_SUBST(PYGOBJECT_FIXXREF)
 
 CAJA_LIBDIR=`$PKG_CONFIG --variable=libdir libcaja-extension`
 AC_SUBST(CAJA_LIBDIR)
@@ -104,6 +97,7 @@ AC_OUTPUT([
 echo
 echo " caja-python $VERSION"
 echo
-echo "    Caja Prefix: ${prefix}"
+echo "        Caja Prefix: ${prefix}"
+echo "  PyGObject Version: ${PYGOBJECT_VERSION}"
 echo "      Documentation: ${enable_gtk_doc}"
 echo

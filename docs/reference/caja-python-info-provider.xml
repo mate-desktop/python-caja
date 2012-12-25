@@ -4,8 +4,8 @@
 
 <refentry id="class-caja-python-info-provider">
   <refnamediv>
-    <refname>caja.InfoProvider</refname>
-    <refpurpose>caja.InfoProvider Reference</refpurpose>
+    <refname>Caja.InfoProvider</refname>
+    <refpurpose>Caja.InfoProvider Reference</refpurpose>
   </refnamediv>
 
 <!-- ******************************* -->
@@ -16,7 +16,7 @@
     <title>Synopsis</title>
 
     <classsynopsis language="python">
-      <ooclass><classname>caja.InfoProvider</classname></ooclass>
+      <ooclass><classname>Caja.InfoProvider</classname></ooclass>
 
       <methodsynopsis language="python">
         <methodname><link linkend="method-caja-python-info-provider--update-file-info">update_file_info</link></methodname>
@@ -38,11 +38,11 @@
       </methodsynopsis>
 
       <methodsynopsis language="python">
-        <methodname><link linkend="method-caja-python-info-provider--update-complete-invoke">update_complete_invoke</link></methodname>
+        <methodname><link linkend="method-caja-python-info-provider--update-complete-invoke">Caja.info_provider_update_complete_invoke</link></methodname>
         <methodparam><parameter role="keyword">provider</parameter></methodparam>
         <methodparam><parameter role="keyword">handle</parameter></methodparam>
         <methodparam><parameter role="keyword">closure</parameter></methodparam>
-        <methodparam><parameter role="keyword">result</parameter><initializer>caja.OPERATION_COMPLETE</initializer></methodparam>
+        <methodparam><parameter role="keyword">result</parameter><initializer>Caja.OperationResult.COMPLETE</initializer></methodparam>
       </methodsynopsis>
     </classsynopsis>
   </refsect1>
@@ -61,18 +61,20 @@
       </para>
 
 <example>
-    <title>caja.InfoProvider Example</title>
+    <title>Caja.InfoProvider Example</title>
     <programlisting>
-import os.path
-import caja
+from gi.repository import Caja, GObject
 
-class SimpleInfoProviderExample(caja.InfoProvider):
+class ColumnExtension(GObject.GObject, Caja.InfoProvider):
     def __init__(self):
         pass
     
-    def update_file_info(self, file):
-        if os.path.splitext(file.get_name())[1] == ".mp3":
-            file.add_emblem("multimedia")
+    def update_file_info_full(self, provider, handle, closure, file):
+        gobject.timeout_add_seconds(3, self.update_cb, provider, handle, closure)
+        return Caja.OperationResult.IN_PROGRESS
+        
+    def update_cb(self, provider, handle, closure):
+        Caja.info_provider_update_complete_invoke(closure, provider, handle, Caja.OperationResult.FAILED)
     </programlisting>
 </example>
         
@@ -86,7 +88,7 @@ class SimpleInfoProviderExample(caja.InfoProvider):
         <title>Passive Methods</title>
 
         <refsect2 id="method-caja-python-info-provider--update-file-info">
-          <title>caja.InfoProvider.update_file_info</title>
+          <title>Caja.InfoProvider.update_file_info</title>
 
           <programlisting><methodsynopsis language="python">
             <methodname>update_file_info</methodname>
@@ -96,7 +98,7 @@ class SimpleInfoProviderExample(caja.InfoProvider):
           <variablelist>
             <varlistentry>
 	            <term><parameter role="keyword">file</parameter>&nbsp;:</term>
-	            <listitem><simpara>a <link linkend="class-caja-python-file-info"><classname>caja.FileInfo</classname></link> object</simpara></listitem>
+	            <listitem><simpara>a <link linkend="class-caja-python-file-info"><classname>Caja.FileInfo</classname></link> object</simpara></listitem>
             </varlistentry>
           </variablelist>
 
@@ -108,7 +110,7 @@ class SimpleInfoProviderExample(caja.InfoProvider):
 
 
         <refsect2 id="method-caja-python-info-provider--update-file-info-full">
-          <title>caja.InfoProvider.update_file_info_full</title>
+          <title>Caja.InfoProvider.update_file_info_full</title>
 
           <programlisting><methodsynopsis language="python">
             <methodname>update_file_info_full</methodname>
@@ -121,7 +123,7 @@ class SimpleInfoProviderExample(caja.InfoProvider):
           <variablelist>
             <varlistentry>
 	            <term><parameter role="keyword">provider</parameter>&nbsp;:</term>
-	            <listitem><simpara>the current <link linkend="class-caja-python-info-provider"><classname>caja.InfoProvider</classname></link> instance</simpara></listitem>
+	            <listitem><simpara>the current <link linkend="class-caja-python-info-provider"><classname>Caja.InfoProvider</classname></link> instance</simpara></listitem>
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">handle</parameter>&nbsp;:</term>
@@ -129,21 +131,21 @@ class SimpleInfoProviderExample(caja.InfoProvider):
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">closure</parameter>&nbsp;:</term>
-	            <listitem><simpara>a C Closure that must be passed to <link linkend="method-caja-python-info-provider--update-complete-invoke">update_complete_invoke</link> if that method is called</simpara></listitem>
+	            <listitem><simpara>a C Closure that must be passed to <link linkend="method-caja-python-info-provider--update-complete-invoke">Caja.info_provider_update_complete_invoke</link> if that method is called</simpara></listitem>
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">file</parameter>&nbsp;:</term>
-	            <listitem><simpara>a <link linkend="class-caja-python-file-info"><classname>caja.FileInfo</classname></link> object</simpara></listitem>
+	            <listitem><simpara>a <link linkend="class-caja-python-file-info"><classname>Caja.FileInfo</classname></link> object</simpara></listitem>
             </varlistentry>
             <varlistentry>
                 <term><emphasis>Returns</emphasis>&nbsp;:</term>
-                <listitem><simpara>None or a <link linkend="enum-caja-python-operation-result"><classname>caja.OperationResult</classname></link> enum</simpara></listitem>
+                <listitem><simpara>None or a <link linkend="enum-caja-python-operation-result"><classname>Caja.OperationResult</classname></link> enum</simpara></listitem>
             </varlistentry>
           </variablelist>
 
           <para>
                 This method is called by Caja for each file or folder that exists under the
-                current directory listing.  Originally, <link linkend="class-caja-python-info-provider"><classname>caja.InfoProvider</classname></link>
+                current directory listing.  Originally, <link linkend="class-caja-python-info-provider"><classname>Caja.InfoProvider</classname></link>
                 only provided the update_file_info
                 method, which blocked Caja when the method required a lot of computation time.  This method was 
                 created to allow an extension to tell Caja that it will be spending time on an operation and that
@@ -151,8 +153,8 @@ class SimpleInfoProviderExample(caja.InfoProvider):
           </para>
           <para>
                 In order to notify Caja of your extension's intentions, you must return a 
-                <link linkend="enum-caja-python-operation-result"><classname>caja.OperationResult</classname></link> enum.  
-                Then, when the operation has completed, call the self.update_complete_invoke method, passing the provider, 
+                <link linkend="enum-caja-python-operation-result"><classname>Caja.OperationResult</classname></link> enum.  
+                Then, when the operation has completed, call the Caja.info_provider_update_complete_invoke method, passing the provider, 
                 handle and closure variables as parameters.
           </para>
           <para>
@@ -167,7 +169,7 @@ class SimpleInfoProviderExample(caja.InfoProvider):
 
 
         <refsect2 id="method-caja-python-info-provider--cancel-update">
-          <title>caja.InfoProvider.cancel_update</title>
+          <title>Caja.InfoProvider.cancel_update</title>
 
           <programlisting><methodsynopsis language="python">
             <methodname>cancel_update</methodname>
@@ -178,7 +180,7 @@ class SimpleInfoProviderExample(caja.InfoProvider):
           <variablelist>
             <varlistentry>
 	            <term><parameter role="keyword">provider</parameter>&nbsp;:</term>
-	            <listitem><simpara>the current <link linkend="class-caja-python-info-provider"><classname>caja.InfoProvider</classname></link> instance</simpara></listitem>
+	            <listitem><simpara>the current <link linkend="class-caja-python-info-provider"><classname>Caja.InfoProvider</classname></link> instance</simpara></listitem>
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">handle</parameter>&nbsp;:</term>
@@ -202,20 +204,20 @@ class SimpleInfoProviderExample(caja.InfoProvider):
         <title>Active Methods</title>
 
         <refsect2 id="method-caja-python-info-provider--update-complete-invoke">
-          <title>caja.InfoProvider.update_complete_invoke</title>
+          <title>Caja.info_provider_update_complete_invoke</title>
 
           <programlisting><methodsynopsis language="python">
-            <methodname>update_complete_invoke</methodname>
+            <methodname>info_provider_update_complete_invoke</methodname>
             <methodparam><parameter role="keyword">provider</parameter></methodparam>
             <methodparam><parameter role="keyword">handle</parameter></methodparam>
             <methodparam><parameter role="keyword">closure</parameter></methodparam>
-            <methodparam><parameter role="keyword">result</parameter><initializer>caja.OPERATION_COMEPLETE</initializer></methodparam>
+            <methodparam><parameter role="keyword">result</parameter><initializer>Caja.OperationResult.COMPLETE</initializer></methodparam>
           </methodsynopsis></programlisting>
 
           <variablelist>
             <varlistentry>
 	            <term><parameter role="keyword">provider</parameter>&nbsp;:</term>
-	            <listitem><simpara>the current <link linkend="class-caja-python-info-provider"><classname>caja.InfoProvider</classname></link> instance</simpara></listitem>
+	            <listitem><simpara>the current <link linkend="class-caja-python-info-provider"><classname>Caja.InfoProvider</classname></link> instance</simpara></listitem>
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">handle</parameter>&nbsp;:</term>
@@ -223,18 +225,18 @@ class SimpleInfoProviderExample(caja.InfoProvider):
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">closure</parameter>&nbsp;:</term>
-	            <listitem><simpara>a C Closure that must be passed to <link linkend="method-caja-python-info-provider--update-complete-invoke">update_complete_invoke</link> if that method is called</simpara></listitem>
+	            <listitem><simpara>a C Closure that must be passed to <link linkend="method-caja-python-info-provider--update-complete-invoke">Caja.info_provider_update_complete_invoke</link> if that method is called</simpara></listitem>
             </varlistentry>
             <varlistentry>
 	            <term><parameter role="keyword">result</parameter>&nbsp;:</term>
-	            <listitem><simpara>an optional parameter.  If left out, <link linkend="enum-caja-python-operation-result--OPERATION_COMPLETE"><classname>caja.OPERATION_COMPLETE</classname></link> is assumed.  
-	            Otherwise, you may pass any any of the <link linkend="enum-caja-python-operation-result"><classname>caja.OperationResult</classname></link> enums.</simpara></listitem>
+	            <listitem><simpara>an optional parameter.  If left out, <link linkend="enum-caja-python-operation-result--OPERATION_COMPLETE"><classname>Caja.OperationResult.COMPLETE</classname></link> is assumed.  
+	            Otherwise, you may pass any any of the <link linkend="enum-caja-python-operation-result"><classname>Caja.OperationResult</classname></link> enums.</simpara></listitem>
             </varlistentry>
           </variablelist>
 
           <para>
             An extension must call this method for each update_file_info_full method that
-            returns the <link linkend="enum-caja-python-operation-result--OPERATION_IN_PROGRESS"><classname>caja.OPERATION_IN_PROGRESS</classname></link> enum.  
+            returns the <link linkend="enum-caja-python-operation-result--OPERATION_IN_PROGRESS"><classname>Caja.OperationResult.IN_PROGRESS</classname></link> enum.  
             The method must be called with the provider, handle, and closure parameters which were passed to the earlier <link linkend="method-caja-python-info-provider--update-file-info-full"><function>update_file_info_full</function></link> method.
           </para>
           <note>

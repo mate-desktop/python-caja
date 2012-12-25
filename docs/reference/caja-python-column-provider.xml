@@ -4,8 +4,8 @@
 
 <refentry id="class-caja-python-column-provider">
   <refnamediv>
-    <refname>caja.ColumnProvider</refname>
-    <refpurpose>caja.ColumnProvider Reference</refpurpose>
+    <refname>Caja.ColumnProvider</refname>
+    <refpurpose>Caja.ColumnProvider Reference</refpurpose>
   </refnamediv>
 
 <!-- ******************************* -->
@@ -16,7 +16,7 @@
     <title>Synopsis</title>
 
     <classsynopsis language="python">
-      <ooclass><classname>caja.ColumnProvider</classname></ooclass>
+      <ooclass><classname>Caja.ColumnProvider</classname></ooclass>
 
       <methodsynopsis language="python">
         <methodname><link linkend="method-caja-column-provider--get-columns">get_columns</link></methodname>
@@ -33,32 +33,32 @@
     <title>Description</title>
 
       <para>
-        If subclassed, Caja will request a list of <link linkend="class-caja-python-column"><classname>caja.Column</classname></link> 
+        If subclassed, Caja will request a list of <link linkend="class-caja-python-column"><classname>Caja.Column</classname></link> 
         objects, which are then displayed when the user is in <literal>List</literal> mode.
         
-        <note>An extension sub-classing <link linkend="class-caja-python-column-provider"><classname>caja.ColumnProvider</classname></link> 
-        will almost always want to sub-class <link linkend="class-info-provider"><classname>caja.InfoProvider</classname></link> 
+        <note>An extension sub-classing <link linkend="class-caja-python-column-provider"><classname>Caja.ColumnProvider</classname></link> 
+        will almost always want to sub-class <link linkend="class-info-provider"><classname>Caja.InfoProvider</classname></link> 
         as well, since that is how an extension provides information for each item in a directory listing.
         </note>
         </para>
 
 <example>
-    <title>caja.ColumnProvider Example</title>
+    <title>Caja.ColumnProvider Example</title>
     <programlisting>
 import os
 import urllib
 
-import caja
+from gi.repository import Caja, GObject
 
-class ColumnExtension(caja.ColumnProvider, caja.InfoProvider):
+class ColumnExtension(GObject.GObject, Caja.ColumnProvider, Caja.InfoProvider):
     def __init__(self):
         pass
     
     def get_columns(self):
-        return caja.Column("CajaPython::block_size_column",
-                               "block_size",
-                               "Block size",
-                               "Get the block size"),
+        return Caja.Column(name="CajaPython::block_size_column",
+                               attribute="block_size",
+                               label="Block size",
+                               description="Get the block size"),
 
     def update_file_info(self, file):
         if file.get_uri_scheme() != 'file':
@@ -80,7 +80,7 @@ class ColumnExtension(caja.ColumnProvider, caja.InfoProvider):
         <title>Passive Methods</title>
 
         <refsect2 id="method-caja-column-provider--get-columns">
-          <title>caja.ColumnProvider.get_columns</title>
+          <title>Caja.ColumnProvider.get_columns</title>
 
           <programlisting><methodsynopsis language="python">
             <methodname>get_columns</methodname>
@@ -90,13 +90,13 @@ class ColumnExtension(caja.ColumnProvider, caja.InfoProvider):
           <variablelist>
             <varlistentry>
               <term><emphasis>Returns</emphasis>&nbsp;:</term>
-              <listitem><simpara>a list of <literal>caja.Column</literal></simpara></listitem>
+              <listitem><simpara>a list of <literal>Caja.Column</literal></simpara></listitem>
             </varlistentry>
           </variablelist>
 
           <para>
             The <methodname>get_columns</methodname>() method returns a list of
-            <link linkend="class-caja-python-column"><classname>caja.Column</classname></link>.
+            <link linkend="class-caja-python-column"><classname>Caja.Column</classname></link>.
           </para>
         </refsect2>
     </refsect1>

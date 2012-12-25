@@ -1,22 +1,18 @@
-import urllib
-
-import mateconf
-import caja
+from gi.repository import Caja, GObject, Gio
 
 SUPPORTED_FORMATS = 'image/jpeg', 'image/png'
-BACKGROUND_KEY = '/desktop/mate/background/picture_filename'
+BACKGROUND_SCHEMA = 'org.mate.desktop.background'
+BACKGROUND_KEY = 'picture-uri'
 
-class BackgroundImageExtension(caja.MenuProvider):
+class BackgroundImageExtension(GObject.GObject, Caja.MenuProvider):
     def __init__(self):
-        self.mateconf = mateconf.client_get_default()
+        self.bgsettings = Gio.Settings.new(BACKGROUND_SCHEMA)
     
     def menu_activate_cb(self, menu, file):
         if file.is_gone():
             return
         
-        # Strip leading file://
-        filename = urllib.unquote(file.get_uri()[7:])
-        self.mateconf.set_string(BACKGROUND_KEY, filename)
+        self.bgsettings[BACKGROUND_KEY] = file.get_uri()
         
     def get_file_items(self, window, files):
         if len(files) != 1:
@@ -33,8 +29,8 @@ class BackgroundImageExtension(caja.MenuProvider):
         if file.get_uri_scheme() != 'file':
             return
 
-        item = caja.MenuItem('Caja::set_background_image',
-                                 'Use as background image',
-                                 'Set the current image as a background image')
+        item = Caja.MenuItem(name='Caja::set_background_image',
+                                 label='Use as background image',
+                                 tip='Set the current image as a background image')
         item.connect('activate', self.menu_activate_cb, file)
         return item,

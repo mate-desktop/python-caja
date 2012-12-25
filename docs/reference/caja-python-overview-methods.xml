@@ -10,8 +10,8 @@
     <para>Because caja-python is an interface to a Caja' extension interface rather than a true library, it is
     rather quirky in how it works.  One example of this is that several providers have additional public methods
     that an extension actively calls, rather than the extension defining and the method in their class that is called by
-    Caja.  You can see this with the <link linkend="method-caja-python-menu-provider--emit-items-updated-signal">caja.MenuProvider.emit_items_updated_signal</link>
-    and <link linkend="method-caja-python-info-provider--update-complete-invoke">caja.InfoProvider.update_complete_invoke</link> methods, which
+    Caja.  You can see this with the <link linkend="method-caja--menu-provider-emit-items-updated-signal">Caja.menu_provider_emit_items_updated_signal</link>
+    and <link linkend="method-caja--info-provider-update-complete-invoke">Caja.info_provider_update_complete_invoke</link> methods, which
     the extension actively calls, passing the provider instance as a parameter.
     </para>
     
