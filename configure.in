@@ -25,7 +25,7 @@ AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 dnl Check for gtk-doc
 GTK_DOC_CHECK(1.9)
 
-dnl Give error and exit if we don't have pkgconfig
+dnl Give error and exit if we dont have pkgconfig
 if test "x$HAVE_PKGCONFIG" = "xno"; then
   AC_MSG_ERROR(you need to have pkgconfig installed !)
 fi
@@ -61,6 +61,12 @@ PKG_CHECK_MODULES(CAJA_PYTHON, [$PYGOBJECT_VERSION >= $PYGOBJECT_REQUIRED
 PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir $PYGOBJECT_VERSION`
 AC_SUBST(PYGOBJECT_DATADIR)
 
+PYGOBJECT_PYGDOCS="`$PKG_CONFIG --variable=pygdocs $PYGOBJECT_VERSION`"
+AC_SUBST(PYGOBJECT_PYGDOCS)
+
+PYGOBJECT_FIXXREF="$PYTHON `$PKG_CONFIG --variable=fixxref $PYGOBJECT_VERSION`"
+AC_SUBST(PYGOBJECT_FIXXREF)
+
 CAJA_LIBDIR=`$PKG_CONFIG --variable=libdir libcaja-extension`
 AC_SUBST(CAJA_LIBDIR)
 AC_DEFINE_UNQUOTED(CAJA_LIBDIR, "$CAJA_LIBDIR", [Caja libdir])
@@ -70,7 +76,7 @@ dnl Get caja extensions directory
 dnl ---------------------------------
 CAJA_EXTENSION_DIR=`$PKG_CONFIG --variable=extensiondir libcaja-extension`
 AC_SUBST(CAJA_EXTENSION_DIR)
-AC_DEFINE_UNQUOTED(CAJA_EXTENSION_DIR, "$CAJA_EXTENSION_DIR", [Caja' extensions directory])
+AC_DEFINE_UNQUOTED(CAJA_EXTENSION_DIR, "$CAJA_EXTENSION_DIR", [Caja extensions directory])
 
 dnl ---------------------------------
 dnl Check for gtk-doc dependencies
