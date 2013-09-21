@@ -1,12 +1,9 @@
-AC_INIT
-
-PACKAGE=caja-python
-VERSION=1.6.0
+AC_INIT([caja-python], [1.6.0], [http://mate-desktop.org])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 
-AM_INIT_AUTOMAKE($PACKAGE, $VERSION)
+AM_INIT_AUTOMAKE
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
@@ -27,7 +24,7 @@ GTK_DOC_CHECK(1.9)
 
 dnl Give error and exit if we dont have pkgconfig
 if test "x$HAVE_PKGCONFIG" = "xno"; then
-  AC_MSG_ERROR(you need to have pkgconfig installed !)
+  AC_MSG_ERROR([you need to have pkgconfig installed !])
 fi
 
 AC_PREFIX_DEFAULT([$(pkg-config --variable=prefix libcaja-extension || echo /usr)])
@@ -35,8 +32,8 @@ AC_PREFIX_DEFAULT([$(pkg-config --variable=prefix libcaja-extension || echo /usr
 dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
-AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR(could not find Python headers)])
-AM_CHECK_PYTHON_LIBS(,[AC_MSG_ERROR(could not find Python lib)])
+AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR([could not find Python headers])])
+AM_CHECK_PYTHON_LIBS(,[AC_MSG_ERROR([could not find Python lib])])
 
 if test "`pkg-config --variable=datadir pygobject-3.0`" != "" ; then
     PYGOBJECT_VERSION=pygobject-3.0
@@ -100,7 +97,7 @@ AC_OUTPUT([
 ])
 
 echo
-echo " caja-python $VERSION"
+echo " caja-python $PACKAGE_VERSION"
 echo
 echo "        Caja Prefix: ${prefix}"
 echo "  PyGObject Version: ${PYGOBJECT_VERSION}"
