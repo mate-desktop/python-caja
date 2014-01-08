@@ -3,11 +3,9 @@ AC_INIT([caja-python], [1.6.0], [http://mate-desktop.org])
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 
-AM_INIT_AUTOMAKE
+AM_INIT_AUTOMAKE(1.10 dist-xz no-dist-gzip)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
-
-AC_SUBST(ACLOCAL_AMFLAGS, "-I m4 -I .")
 
 CAJA_REQUIRED=1.6.0
 
