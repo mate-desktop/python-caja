@@ -25,8 +25,6 @@ if test "x$HAVE_PKGCONFIG" = "xno"; then
   AC_MSG_ERROR([you need to have pkgconfig installed !])
 fi
 
-AC_PREFIX_DEFAULT([$(pkg-config --variable=prefix libcaja-extension || echo /usr)])
-
 dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
