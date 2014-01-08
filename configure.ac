@@ -1,4 +1,6 @@
-AC_INIT([caja-python], [1.6.0], [http://mate-desktop.org])
+AC_INIT([python-caja], [1.6.0],
+	[https://github.com/mate-desktop/python-caja/issues],
+	[python-caja], [http://mate-desktop.org])
 
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
