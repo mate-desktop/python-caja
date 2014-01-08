@@ -6,6 +6,8 @@ AM_CPPFLAGS =						\
 	-I$(top_builddir)				\
 	$(DISABLE_DEPRECATED_CFLAGS)			\
 	$(CAJA_PYTHON_CFLAGS)			\
+	-DPYTHON_VERSION=\"$(PYTHON_VERSION)\"		\
+	-DPY_LIB_LOC="\"$(PYTHON_LIB_LOC)\""		\
 	$(PYTHON_INCLUDES)
 
 caja_extensiondir=$(CAJA_EXTENSION_DIR)
@@ -18,5 +20,5 @@ libcaja_python_la_SOURCES =     	\
 	caja-python-object.c	\
 	caja-python-object.h
 
-libcaja_python_la_LDFLAGS = -module -avoid-version -no-undefined
+libcaja_python_la_LDFLAGS = -module -avoid-version
 libcaja_python_la_LIBADD  = $(CAJA_PYTHON_LIBS) $(PYTHON_LIBS)
