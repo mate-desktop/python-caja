@@ -11,4 +11,4 @@ pkgconfig_DATA = caja-python.pc
 
 EXTRA_DIST = caja-python.pc.in
 
-DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc --with-cajadir='$${libdir}/caja/extensions-2.0-distcheck'

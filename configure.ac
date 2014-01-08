@@ -17,13 +17,13 @@ dnl Check for pkgconfig first
 AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, yes, no)
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 
-dnl Check for gtk-doc
-GTK_DOC_CHECK(1.9)
-
-dnl Give error and exit if we dont have pkgconfig
+dnl Give error and exit if we don't have pkgconfig
 if test "x$HAVE_PKGCONFIG" = "xno"; then
   AC_MSG_ERROR([you need to have pkgconfig installed !])
 fi
+
+dnl Check for gtk-doc
+GTK_DOC_CHECK(1.9)
 
 dnl **************************************************
 dnl * Check for Python
@@ -67,9 +67,16 @@ AC_DEFINE_UNQUOTED(CAJA_LIBDIR, "$CAJA_LIBDIR", [Caja libdir])
 dnl ---------------------------------
 dnl Get caja extensions directory
 dnl ---------------------------------
-CAJA_EXTENSION_DIR=`$PKG_CONFIG --variable=extensiondir libcaja-extension`
-AC_SUBST(CAJA_EXTENSION_DIR)
-AC_DEFINE_UNQUOTED(CAJA_EXTENSION_DIR, "$CAJA_EXTENSION_DIR", [Caja extensions directory])
+AC_ARG_WITH(cajadir,
+	AS_HELP_STRING([--with-cajadir=DIR],[Installation path for Caja extension @<:@auto@:>@]),
+	[ac_with_cajadir=$withval],
+	[ac_with_cajadir=""])
+if test "${ac_with_cajadir}" = ""; then
+	ac_with_cajadir=`$PKG_CONFIG --variable=extensiondir libcaja-extension`
+fi
+
+AC_MSG_NOTICE([installing caja plugin in ${ac_with_cajadir}])
+AC_SUBST([CAJA_EXTENSION_DIR], [${ac_with_cajadir}])
 
 dnl ---------------------------------
 dnl Check for gtk-doc dependencies
