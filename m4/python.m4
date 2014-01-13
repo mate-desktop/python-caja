@@ -45,7 +45,7 @@ AC_MSG_CHECKING(for headers required to compile python extensions)
 dnl deduce PYTHON_INCLUDES
 py_prefix=`$PYTHON -c "import sys; print(sys.prefix)"`
 py_exec_prefix=`$PYTHON -c "import sys; print(sys.exec_prefix)"`
-PYTHON_INCLUDES="-I${py_prefix}/include/python${PYTHON_VERSION}"
+PYTHON_INCLUDES=`python-config --includes`
 if test "$py_prefix" != "$py_exec_prefix"; then
   PYTHON_INCLUDES="$PYTHON_INCLUDES -I${py_exec_prefix}/include/python${PYTHON_VERSION}"
 fi
@@ -85,7 +85,7 @@ AC_DEFUN([AC_MULTILIB],
   dnl pathname ends in /lib64, we assume a 64-bit ABI. Otherwise we use the
   dnl default, namely "lib".
   enable_lib64="$1"
-  libdirsuffix=""
+  libdirsuffix="/i386-linux-gnu/"
   searchpath=`(LC_ALL=C $CC -print-search-dirs) 2>/dev/null | sed -n -e 's,^libraries: ,,p' | sed -e 's,^=,,'`
   if test "$enable_lib64" = "yes" -a -n "$searchpath"; then
     save_IFS="${IFS=    }"; IFS=":"
@@ -93,9 +93,11 @@ AC_DEFUN([AC_MULTILIB],
       if test -d "$searchdir"; then
         case "$searchdir" in
           */lib64/ | */lib64 ) libdirsuffix=64 ;;
+          /lib/x86_64-linux-gnu/ | /lib/x86_64-linux-gnu ) libdirsuffix=/x86_64-linux-gnu ;;
           *) searchdir=`cd "$searchdir" && pwd`
              case "$searchdir" in
                */lib64 ) libdirsuffix=64 ;;
+               /lib/x86_64-linux-gnu ) libdirsuffix=/x86_64-linux-gnu ;;
              esac ;;
         esac
       fi
