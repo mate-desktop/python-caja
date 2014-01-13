@@ -3,10 +3,10 @@ BUILDDIR = $(top_builddir)/docs
 REF_VERSION = $(VERSION)
 FULL_VERSION = $(VERSION)
 
-HTML_STYLE = $(PYGOBJECT_DATADIR)/pygobject/xsl/ref-html-style.xsl
-PDF_STYLE = $(PYGOBJECT_DATADIR)/pygobject/xsl/pdf-style.xsl
+FIXXREF = $(srcdir)/xsl/fixxref.py
+HTML_STYLE = $(srcdir)/xsl/ref-html-style.xsl
 
-XMLFILES = 							\
+XML_FILES = 							\
 	reference/caja-python-ref.xml			\
 	reference/caja-python-overview.xml			\
 	reference/caja-python-overview-example.xml			\
@@ -27,7 +27,7 @@ XMLFILES = 							\
 	reference/caja-python-operation-result.xml
 
 HTMLdir = $(datadir)/gtk-doc/html/caja-python
-HTMLFILES =						\
+HTML_FILES =						\
 	html/index.html					\
 	html/index.sgml					\
 	html/caja-python-overview.html \
@@ -48,39 +48,55 @@ HTMLFILES =						\
 	html/caja-python-enum-reference.html \
 	html/enum-caja-python-operation-result.html  \
 	html/caja-python.devhelp
+HTML_DATA = $(HTML_FILES)
 
-CSS_FILES = $(PYGOBJECT_PYGDOCS)/style.css
+XSL_FILES =             \
+	xsl/common.xsl      \
+	xsl/devhelp.xsl     \
+	xsl/html.xsl        \
+	xsl/pdf-style.xsl   \
+	xsl/pdf.xsl         \
+	xsl/style.css
+XSL_DATA = $(XSL_FILES) $(FIXXREF)
+XSLdir = $(BUILDDIR)/xsl
+
+CSS_FILES = xsl/style.css
 CSSdir = $(HTMLdir)
 CSS_DATA = $(CSS_FILES)
 
 BUILT_SOURCES = 		\
 	reference/builddate.xml	\
-	$(HTMLFILES)
+	$(HTML_FILES)
 
 CLEANFILES = 			\
 	caja-python-ref.*	\
 	reference/builddate.xml	\
-	$(HTMLFILES)
+	$(HTML_FILES)
 
 EXTRA_DIST = 		\
-	$(XMLFILES)
+	$(XML_FILES)     \
+	$(XSL_FILES)    \
+	$(FIXXREF)      \
+	$(HTML_STYLE)
 
 REFERENCE_DEPS = 	\
 	reference 	\
-	$(XMLFILES)
+	$(XML_FILES)    \
+	$(XSL_FILES)    \
+	$(FIXXREF)
 
 if ENABLE_GTK_DOC
 
 reference/builddate.xml: $(REFERENCE_DEPS)
 	$(PYTHON) -c 'import datetime; print datetime.date.today()' > $@
 
-$(HTMLFILES): $(REFERENCE_DEPS)
+$(HTML_FILES): $(REFERENCE_DEPS)
 	xsltproc --nonet --xinclude -o $(BUILDDIR)/html/ \
 		 --path $(BUILDDIR)/reference:$(srcdir)/reference \
 		 --stringparam gtkdoc.bookname "caja-python" \
 		 --stringparam gtkdoc.version ${REF_VERSION} \
 		 $(HTML_STYLE) $(srcdir)/reference/caja-python-ref.xml
-	$(PYGOBJECT_FIXXREF) -i $(PYGOBJECT_PYGDOCS) $(BUILDDIR)/html 
+	$(FIXXREF) -i xsl $(BUILDDIR)/html
 	touch $@
 
 endif
