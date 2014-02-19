@@ -5,7 +5,7 @@ AC_INIT([python-caja], [1.7.0],
 AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 
-AM_INIT_AUTOMAKE(1.10 dist-xz no-dist-gzip)
+AM_INIT_AUTOMAKE(1.10 dist-xz no-dist-gzip check-news)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
