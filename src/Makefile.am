@@ -16,12 +16,13 @@ libcaja_python_la_CPPFLAGS = \
 	-DLIBDIR=\"$(libdir)\" \
 	-DPYTHON_VERSION=\"$(PYTHON_VERSION)\" \
 	-DPY_LIB_LOC="\"$(PYTHON_LIB_LOC)\"" \
-	$(PYTHON_INCLUDES) \
+	$(CAJA_PYTHON_CFLAGS) \
 	$(AM_CPPFLAGS)
 
 libcaja_python_la_CFLAGS = \
+	$(PYTHON_CFLAGS)
 	$(CAJA_PYTHON_CFLAGS) \
 	$(AM_CFLAGS)
 
 libcaja_python_la_LDFLAGS = -module -avoid-version
-libcaja_python_la_LIBADD  = $(CAJA_PYTHON_LIBS) $(PYTHON_LIBS)
+libcaja_python_la_LIBADD  = $(PYTHON_LIBS) $(CAJA_PYTHON_LIBS)

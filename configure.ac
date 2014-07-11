@@ -30,8 +30,12 @@ GTK_DOC_CHECK(1.9)
 dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
-AM_CHECK_PYTHON_HEADERS(,[AC_MSG_ERROR([could not find Python headers])])
-AM_CHECK_PYTHON_LIBS(,[AC_MSG_ERROR([could not find Python lib])])
+AM_PATH_PYTHON([2.6])
+PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
+PYTHON_LIB_LOC="`pkg-config python-${PYTHON_VERSION} --variable=libdir`"
+AC_SUBST(PYTHON_LIBS)
+AC_SUBST(PYTHON_CFLAGS)
+AC_SUBST(PYTHON_LIB_LOC)
 
 if test "`pkg-config --variable=datadir pygobject-3.0`" != "" ; then
     PYGOBJECT_VERSION=pygobject-3.0
