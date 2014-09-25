@@ -30,7 +30,7 @@ GTK_DOC_CHECK(1.9)
 dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
-AM_PATH_PYTHON([2.6])
+AM_PATH_PYTHON([2.7])
 PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
 PYTHON_LIB_LOC="`pkg-config python-${PYTHON_VERSION} --variable=libdir`"
 AC_SUBST(PYTHON_LIBS)
