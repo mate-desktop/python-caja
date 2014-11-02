@@ -19,10 +19,18 @@ dnl Check for pkgconfig first
 AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, yes, no)
 AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
 
-dnl Give error and exit if we don't have pkgconfig
+dnl Give error and exit if we dont have pkgconfig
 if test "x$HAVE_PKGCONFIG" = "xno"; then
   AC_MSG_ERROR([you need to have pkgconfig installed !])
 fi
+
+dnl i18n
+GETTEXT_PACKAGE=python-caja
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [GetText Package])
+
+AM_GLIB_GNU_GETTEXT
+IT_PROG_INTLTOOL([0.35.0])
 
 dnl Check for gtk-doc
 GTK_DOC_CHECK(1.9)
@@ -103,6 +111,7 @@ AC_OUTPUT([
   caja-python.pc
   docs/Makefile
   docs/reference/entities.docbook
+  po/Makefile.in
 ])
 
 echo
