@@ -57,8 +57,6 @@ XSL_FILES =             \
 	xsl/pdf-style.xsl   \
 	xsl/pdf.xsl         \
 	xsl/style.css
-XSL_DATA = $(XSL_FILES) $(FIXXREF)
-XSLdir = $(BUILDDIR)/xsl
 
 CSS_FILES = xsl/style.css
 CSSdir = $(HTMLdir)
