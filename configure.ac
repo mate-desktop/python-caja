@@ -106,6 +106,7 @@ fi
 
 AC_OUTPUT([
   Makefile
+  libcaja-python.caja-extension.in
   examples/Makefile
   src/Makefile
   caja-python.pc
