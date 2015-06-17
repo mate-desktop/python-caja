@@ -3,6 +3,6 @@ Description: Caja-Python Components
 Version: @VERSION@
 
 prefix=@prefix@
-datarootdir = @datarootdir@
+datarootdir=@datarootdir@
 libdir=@libdir@
 pythondir=@datadir@/caja-python/extensions
