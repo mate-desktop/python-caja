@@ -40,6 +40,7 @@ CajaPythonDebug caja_python_debug;
 static gboolean caja_python_init_python(void);
 
 static GArray *all_types = NULL;
+static GList *all_pyfiles = NULL;
 
 
 static inline gboolean 
@@ -96,6 +97,8 @@ caja_python_load_file(GTypeModule *type_module,
 		{
 			gtype = caja_python_object_get_type(type_module, value);
 			g_array_append_val(all_types, gtype);
+			
+			all_pyfiles = g_list_append(all_pyfiles, (gchar*)filename);
 		}
 	}
 	
@@ -271,6 +274,7 @@ caja_module_shutdown(void)
 		Py_Finalize();
 
 	g_array_free(all_types, TRUE);
+	g_list_free (all_pyfiles);
 }
 
 void 
@@ -281,4 +285,12 @@ caja_module_list_types(const GType **types,
 	
 	*types = (GType*)all_types->data;
 	*num_types = all_types->len;
+}
+
+void 
+caja_module_list_pyfiles(GList **pyfiles)
+{
+	debug_enter();
+
+	*pyfiles = all_pyfiles;
 }
