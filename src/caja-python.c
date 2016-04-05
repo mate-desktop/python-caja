@@ -64,16 +64,16 @@ caja_python_load_file(GTypeModule *type_module,
 	PyObject *module;
 	GType gtype;
 	Py_ssize_t pos = 0;
-	
+
 	debug_enter_args("filename=%s", filename);
-	
+
 	main_module = PyImport_AddModule("__main__");
 	if (main_module == NULL)
 	{
 		g_warning("Could not get __main__.");
 		return;
 	}
-	
+
 	main_locals = PyModule_GetDict(main_module);
 	module = PyImport_ImportModuleEx((char *) filename, main_locals, main_locals, NULL);
 	if (!module)
@@ -81,9 +81,9 @@ caja_python_load_file(GTypeModule *type_module,
 		PyErr_Print();
 		return;
 	}
-	
+
 	locals = PyModule_GetDict(module);
-	
+
 	while (PyDict_Next(locals, &pos, &key, &value))
 	{
 		if (!PyType_Check(value))
@@ -97,11 +97,11 @@ caja_python_load_file(GTypeModule *type_module,
 		{
 			gtype = caja_python_object_get_type(type_module, value);
 			g_array_append_val(all_types, gtype);
-			
+
 			all_pyfiles = g_list_append(all_pyfiles, (gchar*)filename);
 		}
 	}
-	
+
 	debug("Loaded python modules");
 }
 
@@ -184,7 +184,7 @@ caja_python_init_python (void)
 		PyErr_Print();
 		return FALSE;
 	}
-	
+
 	debug("Sanitize the python search path");
 	PyRun_SimpleString("import sys; sys.path = filter(None, sys.path)");
 	if (PyErr_Occurred())
@@ -200,7 +200,7 @@ caja_python_init_python (void)
 		g_warning("pygobject initialization failed");
 		return FALSE;
 	}
-	
+
 	/* import caja */
 	g_setenv("INSIDE_CAJA_PYTHON", "", FALSE);
 	debug("import caja");
@@ -251,7 +251,7 @@ caja_module_initialize(GTypeModule *module)
 													 caja_python_ndebug_keys);
 		env_string = NULL;
     }
-	
+
 	debug_enter();
 
 	all_types = g_array_new(FALSE, FALSE, sizeof(GType));
@@ -277,7 +277,7 @@ caja_module_shutdown(void)
 	g_list_free (all_pyfiles);
 }
 
-void 
+void
 caja_module_list_types(const GType **types,
 						   int          *num_types)
 {
@@ -287,7 +287,7 @@ caja_module_list_types(const GType **types,
 	*num_types = all_types->len;
 }
 
-void 
+void
 caja_module_list_pyfiles(GList **pyfiles)
 {
 	debug_enter();
