@@ -1,10 +1,13 @@
 1.13.0
 
-  * bump version
+  * Expose filenames of Python extensions to Caja
+    (needed for showing each Python extension as
+    a separate entry in the extensions list)
+  * Fix missing icon in About dialog
 
 1.12.0
 
-  * bump version
+  * Translations update
 
 1.10.0
 
