@@ -1,9 +1,10 @@
-1.13.0
+1.14.0
 
   * Expose filenames of Python extensions to Caja
     (needed for showing each Python extension as
     a separate entry in the extensions list)
   * Fix missing icon in About dialog
+  * Fix Changelog generation
 
 1.12.0
 
