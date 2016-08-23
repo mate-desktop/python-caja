@@ -1,7 +1,7 @@
 from gi.repository import Caja, GObject, Gio
 
 SUPPORTED_FORMATS = 'image/jpeg', 'image/png'
-BACKGROUND_SCHEMA = 'org.mate.desktop.background'
+BACKGROUND_SCHEMA = 'org.mate.background'
 BACKGROUND_KEY = 'picture-uri'
 
 class BackgroundImageExtension(GObject.GObject, Caja.MenuProvider):
