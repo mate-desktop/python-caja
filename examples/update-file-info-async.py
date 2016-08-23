@@ -1,4 +1,4 @@
-from gi.repository import Caja, GObject
+from gi.repository import Caja, GObject, GLib
 
 class UpdateFileInfoAsync(GObject.GObject, Caja.InfoProvider):
     def __init__(self):
@@ -6,7 +6,7 @@ class UpdateFileInfoAsync(GObject.GObject, Caja.InfoProvider):
     
     def update_file_info_full(self, provider, handle, closure, file):
         print "update_file_info_full"
-        gobject.timeout_add_seconds(3, self.update_cb, provider, handle, closure)
+        GLib.timeout_add_seconds(3, self.update_cb, provider, handle, closure)
         return Caja.OperationResult.IN_PROGRESS
         
     def update_cb(self, provider, handle, closure):
