@@ -34,3 +34,6 @@ class BackgroundImageExtension(GObject.GObject, Caja.MenuProvider):
                                  tip='Set the current image as a background image')
         item.connect('activate', self.menu_activate_cb, file)
         return item,
+
+    def get_background_items(self, window, file):
+        return []
