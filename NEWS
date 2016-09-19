@@ -1,5 +1,8 @@
-1.15.0
+1.16.0
 
+  * Examples: fix Caja crash on loading background-image
+    extension
+  * Examples: various fixes
   * Translations update
 
 1.14.0
