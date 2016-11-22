@@ -1,4 +1,4 @@
-AC_INIT([python-caja], [1.16.0],
+AC_INIT([python-caja], [1.17.0],
 	[https://github.com/mate-desktop/python-caja/issues],
 	[python-caja], [http://mate-desktop.org])
 
@@ -9,7 +9,7 @@ AM_INIT_AUTOMAKE(1.10 dist-xz no-dist-gzip check-news)
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
-CAJA_REQUIRED=1.6.0
+CAJA_REQUIRED=1.17.1
 
 AC_PROG_CC
 AC_DISABLE_STATIC
@@ -45,33 +45,25 @@ AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIB_LOC)
 
-if test "`pkg-config --variable=datadir pygobject-3.0`" != "" ; then
-    PYGOBJECT_VERSION=pygobject-3.0
-    PYGOBJECT_MAJOR_VERSION=3
-    PYGOBJECT_MINOR_VERSION=0
-    PYGOBJECT_MICRO_VERSION=0
-else
-    PYGOBJECT_VERSION=pygobject-2.0
-    PYGOBJECT_MAJOR_VERSION=2
-    PYGOBJECT_MINOR_VERSION=28
-    PYGOBJECT_MICRO_VERSION=2
-fi
+PYGOBJECT_MAJOR_VERSION=3
+PYGOBJECT_MINOR_VERSION=0
+PYGOBJECT_MICRO_VERSION=0
 
 PYGOBJECT_REQUIRED=$PYGOBJECT_MAJOR_VERSION.$PYGOBJECT_MINOR_VERSION.$PYGOBJECT_MICRO_VERSION
 AC_DEFINE_UNQUOTED(PYGOBJECT_MAJOR_VERSION,[$PYGOBJECT_MAJOR_VERSION], [PyGObject major version.])
 AC_DEFINE_UNQUOTED(PYGOBJECT_MINOR_VERSION,[$PYGOBJECT_MINOR_VERSION], [PyGObject minor version.])
 AC_DEFINE_UNQUOTED(PYGOBJECT_MICRO_VERSION,[$PYGOBJECT_MICRO_VERSION], [PyGObject micro version.])
 
-PKG_CHECK_MODULES(CAJA_PYTHON, [$PYGOBJECT_VERSION >= $PYGOBJECT_REQUIRED
+PKG_CHECK_MODULES(CAJA_PYTHON, [pygobject-3.0 >= $PYGOBJECT_REQUIRED
                                 libcaja-extension >= $CAJA_REQUIRED])
 
-PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir $PYGOBJECT_VERSION`
+PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir pygobject-3.0`
 AC_SUBST(PYGOBJECT_DATADIR)
 
-PYGOBJECT_PYGDOCS="`$PKG_CONFIG --variable=pygdocs $PYGOBJECT_VERSION`"
+PYGOBJECT_PYGDOCS="`$PKG_CONFIG --variable=pygdocs pygobject-3.0`"
 AC_SUBST(PYGOBJECT_PYGDOCS)
 
-PYGOBJECT_FIXXREF="$PYTHON `$PKG_CONFIG --variable=fixxref $PYGOBJECT_VERSION`"
+PYGOBJECT_FIXXREF="$PYTHON `$PKG_CONFIG --variable=fixxref pygobject-3.0`"
 AC_SUBST(PYGOBJECT_FIXXREF)
 
 CAJA_LIBDIR=`$PKG_CONFIG --variable=libdir libcaja-extension`
@@ -119,6 +111,5 @@ echo
 echo " caja-python $PACKAGE_VERSION"
 echo
 echo "        Caja Prefix: ${prefix}"
-echo "  PyGObject Version: ${PYGOBJECT_VERSION}"
 echo "      Documentation: ${enable_gtk_doc}"
 echo
