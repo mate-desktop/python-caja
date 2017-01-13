@@ -1,17 +1,17 @@
-1.17.0
+### python-caja 1.17.0
 
   * Translations update
-  * support GTK+3 only: require Caja 1.17.1 and pygobject-3.0
+  * support GTK+3 only: require Caja ### python-caja 1.17.1 and pygobject-3.0
   * drop ancient check for Python 2.5, not needed these days
 
-1.16.0
+### python-caja 1.16.0
 
   * Examples: fix Caja crash on loading background-image
     extension
   * Examples: various fixes
   * Translations update
 
-1.14.0
+### python-caja 1.14.0
 
   * Expose filenames of Python extensions to Caja
     (needed for showing each Python extension as
@@ -19,19 +19,19 @@
   * Fix missing icon in About dialog
   * Fix Changelog generation
 
-1.12.0
+### python-caja 1.12.0
 
   * Translations update
 
-1.10.0
+### python-caja 1.10.0
 
   * Bugfixes
   * Add about window for caja extensions tab
 
-1.8.1 Bugfix release
+### python-caja 1.8.1 Bugfix release
 
   * Use pkg-config for python detection and variables
 
-1.8.0
+### python-caja 1.8.0
 
   * Bugfixes
