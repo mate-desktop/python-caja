@@ -1,7 +1,7 @@
-### python-caja 1.17.0
+### python-caja 1.18.0
 
   * Translations update
-  * support GTK+3 only: require Caja ### python-caja 1.17.1 and pygobject-3.0
+  * support GTK+3 only: require Caja 1.17.1 and pygobject-3.0
   * drop ancient check for Python 2.5, not needed these days
 
 ### python-caja 1.16.0
