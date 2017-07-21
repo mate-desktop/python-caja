@@ -157,7 +157,7 @@ caja_python_load_dir (GTypeModule *module,
 static gboolean
 caja_python_init_python (void)
 {
-	PyObject *caja;
+	PyObject *gi, *require_version, *args, *caja;
 	GModule *libpython;
 	char *argv[] = { "caja", NULL };
 
@@ -204,6 +204,19 @@ caja_python_init_python (void)
 	/* import caja */
 	g_setenv("INSIDE_CAJA_PYTHON", "", FALSE);
 	debug("import caja");
+	gi = PyImport_ImportModule ("gi");
+	if (!gi) {
+		g_critical ("can't find gi");
+		return FALSE;
+	}
+
+	require_version = PyObject_GetAttrString (gi, (char *) "require_version");
+	args = PyTuple_Pack (2, PyUnicode_FromString ("Caja"),
+	PyUnicode_FromString ("2.0"));
+	PyObject_CallObject (require_version, args);
+	Py_DECREF (require_version);
+	Py_DECREF (args);
+	Py_DECREF (gi);
 	caja = PyImport_ImportModule("gi.repository.Caja");
 	if (!caja)
 	{
