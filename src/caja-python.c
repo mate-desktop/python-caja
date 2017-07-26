@@ -206,7 +206,7 @@ caja_python_init_python (void)
 	debug("import caja");
 	gi = PyImport_ImportModule ("gi");
 	if (!gi) {
-		g_critical ("can't find gi");
+		PyErr_Print();
 		return FALSE;
 	}
 
