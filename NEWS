@@ -1,5 +1,9 @@
 ### python-caja 1.19.0
 
+  * Translations update
+  * use standard python exception message
+  * Added gi.require_version()
+
 ### python-caja 1.18.0
 
   * Translations update
