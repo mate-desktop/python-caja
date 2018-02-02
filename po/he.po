@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # 
 # Translators:
-# Bar Bokovza <bokovzabox@gmail.com>, 2015
+# בר בוכובזה <bokovzabox@gmail.com>, 2015
 # Edward Sawyer <saoded@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: MATE Desktop Environment\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-09 13:15+0200\n"
+"POT-Creation-Date: 2017-11-29 11:26+0100\n"
 "PO-Revision-Date: 2017-09-21 12:55+0000\n"
 "Last-Translator: Edward Sawyer <saoded@gmail.com>\n"
 "Language-Team: Hebrew (http://www.transifex.com/mate/MATE/language/he/)\n"
