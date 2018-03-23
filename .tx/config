@@ -1,9 +1,9 @@
 [main]
 host = https://www.transifex.com
  
-[MATE.python-caja]
+[MATE.1-20--python-caja]
 file_filter = po/<lang>.po
 source_file = po/python-caja.pot
 source_lang = en
 type = PO
-minimum_perc = 1
+minimum_perc = 2
