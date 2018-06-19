@@ -1,3 +1,5 @@
+#please keep this list sorted alphabetically
+#
 am
 ar
 ast
@@ -15,6 +17,7 @@ el
 en_AU
 en_GB
 es
+es_AR
 es_CO
 es_ES
 et
@@ -28,16 +31,19 @@ fy
 gl
 gu
 he
+hi
 hr
 hu
 hy
 id
+is
 it
 ja
 jv
 kk
 ko
 ku_IQ
+la
 lt
 ms
 nb

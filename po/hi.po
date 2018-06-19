@@ -10,18 +10,18 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-03-18 17:26+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: Milan Savaliya <milansavaliyaz@gmail.com>, 2018\n"
-"Language-Team: Gujarati (https://www.transifex.com/mate/teams/13566/gu/)\n"
+"Last-Translator: Panwar108 <caspian7pena@gmail.com>, 2018\n"
+"Language-Team: Hindi (https://www.transifex.com/mate/teams/13566/hi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: gu\n"
+"Language: hi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libcaja-python.caja-extension.in.h:1
 msgid "Python"
-msgstr "પાયથોન"
+msgstr "पाइथन"
 
 #: ../libcaja-python.caja-extension.in.h:2
 msgid "Allows to use Python extensions"
-msgstr "પાયથોન એક્સ્ટેન્શન્સ વાપરવાની અનુમતી"
+msgstr "पाइथन एक्सटेंशन के उपयोग हेतु सहायक"
