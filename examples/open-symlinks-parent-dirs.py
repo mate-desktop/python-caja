@@ -29,7 +29,7 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
             lbl = "Open Links' Parent Directories"
 
         item = Caja.MenuItem(name='CajaPython::open_symlink_parent_dirs_item',
-                                 label=lbl ,
+                                 label=lbl,
                                  tip=lbl)
         item.connect('activate', self.menu_activate_cb, files)
         return item,
