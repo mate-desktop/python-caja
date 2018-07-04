@@ -12,7 +12,7 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
     def _open_parent_dir(self, files):
         for f in files:
             # find the real location of the file (resolves all symlinks)
-            path = os.path.realpath(f.get_path())
+            path = os.path.realpath(f.get_location().get_path())
             parent = os.path.abspath(os.path.join(path, os.pardir))
             os.system('caja "%s" &' % parent)
         
@@ -31,7 +31,7 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
         item = Caja.MenuItem(name='CajaPython::open_symlink_parent_dirs_item',
                                  label=lbl ,
                                  tip=lbl)
-        item.connect('activate', self.menu_activate_cb, [f.get_location() for f in files])
+        item.connect('activate', self.menu_activate_cb, files)
         return item,
 
     def is_symbolic_link(self, f):
