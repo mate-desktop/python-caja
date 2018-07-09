@@ -20,7 +20,7 @@ msgstr ""
 
 #: ../libcaja-python.caja-extension.in.h:1
 msgid "Python"
-msgstr "Pyhton"
+msgstr "Python"
 
 #: ../libcaja-python.caja-extension.in.h:2
 msgid "Allows to use Python extensions"
