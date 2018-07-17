@@ -15,15 +15,16 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
             path = os.path.realpath(f.get_location().get_path())
             parent = os.path.abspath(os.path.join(path, os.pardir))
             os.system('caja "%s" &' % parent)
-        
+
     def menu_activate_cb(self, menu, files):
         self._open_parent_dir(files)
 
     def get_file_items(self, window, files):
-        if any(not self.is_symbolic_link(f) for f in files):
+        num_files = len(files)
+        if num_files == 0 or any(not self.is_symbolic_link(f) for f in files):
             return
-        
-        if len(files) == 1:
+
+        if num_files == 1:
             lbl = "Open Link's Parent Directory"
         else:
             lbl = "Open Links' Parent Directories"
