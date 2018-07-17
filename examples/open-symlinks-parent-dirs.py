@@ -9,8 +9,8 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
     def __init__(self):
         pass
 
-    def _open_parent_dir(self, files):
-        for f in files:
+    def _open_parent_dir(self, files_or_directories):
+        for f in files_or_directories:
             # find the real location of the file (resolves all symlinks)
             path = os.path.realpath(f.get_location().get_path())
             parent = os.path.abspath(os.path.join(path, os.pardir))
@@ -20,7 +20,7 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
         self._open_parent_dir(files)
 
     def get_file_items(self, window, files):
-        if any(f.is_directory() or not self.is_symbolic_link(f) for f in files):
+        if any(not self.is_symbolic_link(f) for f in files):
             return
         
         if len(files) == 1:
@@ -38,5 +38,3 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
         f_type = f.get_location().query_file_type(Gio.FileQueryInfoFlags.NOFOLLOW_SYMLINKS)
         return f_type is Gio.FileType.SYMBOLIC_LINK
 
-    def get_background_items(self, window, file):
-        return tuple()
