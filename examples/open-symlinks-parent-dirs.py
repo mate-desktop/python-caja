@@ -1,5 +1,6 @@
 import os
 import os.path
+import subprocess
 import urllib
 
 from gi.repository import Caja, GObject, Gio
@@ -10,11 +11,13 @@ class OpenSymLinksParentDirsExtension(Caja.MenuProvider, GObject.GObject):
         pass
 
     def _open_parent_dir(self, files_or_directories):
+        args = ['caja']
         for f in files_or_directories:
             # find the real location of the file (resolves all symlinks)
             path = os.path.realpath(f.get_location().get_path())
             parent = os.path.abspath(os.path.join(path, os.pardir))
-            os.system('caja "%s" &' % parent)
+            args.append(parent)
+        subprocess.Popen(args)
 
     def menu_activate_cb(self, menu, files):
         self._open_parent_dir(files)
