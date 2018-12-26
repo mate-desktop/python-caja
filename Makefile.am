@@ -17,7 +17,10 @@ extension_DATA = $(extension_in_files:.caja-extension.in=.caja-extension)
 EXTRA_DIST = autogen.sh caja-python.pc.in libcaja-python.caja-extension.in
 CLEANFILES = libcaja-python.caja-extension
 
-DISTCHECK_CONFIGURE_FLAGS=--enable-gtk-doc --with-cajadir='$${libdir}/caja/extensions-2.0-distcheck'
+DISTCHECK_CONFIGURE_FLAGS= \
+	--enable-gtk-doc \
+	--with-cajadir='$${libdir}/caja/extensions-2.0-distcheck' \
+	CFLAGS='-Wno-deprecated-declarations'
 
 # Build ChangeLog from GIT  history
 ChangeLog:
