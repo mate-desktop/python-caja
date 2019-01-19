@@ -86,7 +86,7 @@ BUILT_SOURCES = 		\
 	$(HTML_FILES)
 
 reference/builddate.xml: $(REFERENCE_DEPS)
-	$(PYTHON) -c 'import datetime; print datetime.date.today()' > $@
+	$(PYTHON) -c 'import datetime; print (datetime.date.today())' > $@
 
 $(HTML_FILES): $(REFERENCE_DEPS)
 	xsltproc --nonet --xinclude -o $(BUILDDIR)/html/ \
