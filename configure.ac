@@ -55,6 +55,7 @@ AC_DEFINE_UNQUOTED(PYGOBJECT_MINOR_VERSION,[$PYGOBJECT_MINOR_VERSION], [PyGObjec
 AC_DEFINE_UNQUOTED(PYGOBJECT_MICRO_VERSION,[$PYGOBJECT_MICRO_VERSION], [PyGObject micro version.])
 
 PKG_CHECK_MODULES(CAJA_PYTHON, [pygobject-3.0 >= $PYGOBJECT_REQUIRED
+                                gmodule-no-export-2.0
                                 libcaja-extension >= $CAJA_REQUIRED])
 
 PYGOBJECT_DATADIR=`$PKG_CONFIG --variable=datadir pygobject-3.0`
