@@ -196,7 +196,7 @@ caja_python_init_python (void)
 	}
 
 	debug("Sanitize the python search path");
-	PyRun_SimpleString("import sys; sys.path = filter(None, sys.path)");
+	PyRun_SimpleString("import sys; sys.path = list(filter(None, sys.path))");
 	if (PyErr_Occurred())
 	{
 		PyErr_Print();
