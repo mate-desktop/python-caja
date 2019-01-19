@@ -15,6 +15,7 @@ libcaja_python_la_CPPFLAGS = \
 	-DDATADIR=\"$(datadir)\" \
 	-DLIBDIR=\"$(libdir)\" \
 	-DPYTHON_VERSION=\"$(PYTHON_VERSION)\" \
+	-DPYTHON_ABIFLAGS=\"$(PYTHON_ABIFLAGS)\" \
 	-DPY_LIB_LOC="\"$(PYTHON_LIB_LOC)\"" \
 	$(CAJA_PYTHON_CFLAGS) \
 	$(AM_CPPFLAGS)
