@@ -62,10 +62,6 @@ CSS_FILES = xsl/style.css
 CSSdir = $(HTMLdir)
 CSS_DATA = $(CSS_FILES)
 
-BUILT_SOURCES = 		\
-	reference/builddate.xml	\
-	$(HTML_FILES)
-
 CLEANFILES = 			\
 	caja-python-ref.*	\
 	reference/builddate.xml	\
@@ -84,6 +80,10 @@ REFERENCE_DEPS = 	\
 	$(FIXXREF)
 
 if ENABLE_GTK_DOC
+
+BUILT_SOURCES = 		\
+	reference/builddate.xml	\
+	$(HTML_FILES)
 
 reference/builddate.xml: $(REFERENCE_DEPS)
 	$(PYTHON) -c 'import datetime; print datetime.date.today()' > $@
