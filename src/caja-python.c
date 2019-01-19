@@ -31,6 +31,12 @@
 
 #include <libcaja-extension/caja-extension-types.h>
 
+#if PY_MAJOR_VERSION >= 3
+#define STRING_FROMSTRING(str)	PyUnicode_FromString(str)
+#else
+#define STRING_FROMSTRING(str)	PyString_FromString(str)
+#endif
+
 static const GDebugKey caja_python_debug_keys[] = {
 	{"misc", CAJA_PYTHON_DEBUG_MISC},
 };
@@ -145,7 +151,7 @@ caja_python_load_dir (GTypeModule *module,
 				
 				/* sys.path.insert(0, dirname) */
 				sys_path = PySys_GetObject("path");
-				py_path = PyString_FromString(dirname);
+				py_path = STRING_FROMSTRING(dirname);
 				PyList_Insert(sys_path, 0, py_path);
 				Py_DECREF(py_path);
 			}
@@ -159,7 +165,11 @@ caja_python_init_python (void)
 {
 	PyObject *gi, *require_version, *args, *caja;
 	GModule *libpython;
+#if PY_MAJOR_VERSION >= 3
+	wchar_t *argv[] = { L"caja", NULL };
+#else
 	char *argv[] = { "caja", NULL };
+#endif
 
 	if (Py_IsInitialized())
 		return TRUE;
