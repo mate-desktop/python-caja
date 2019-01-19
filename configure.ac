@@ -41,9 +41,11 @@ dnl **************************************************
 AM_PATH_PYTHON([2.7])
 PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
 PYTHON_LIB_LOC="`pkg-config python-${PYTHON_VERSION} --variable=libdir`"
+PYTHON_ABIFLAGS=`$PYTHON -c 'import sys; exec("try: print (sys.abiflags)\nexcept: pass")'`
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
 AC_SUBST(PYTHON_LIB_LOC)
+AC_SUBST(PYTHON_ABIFLAGS)
 
 PYGOBJECT_MAJOR_VERSION=3
 PYGOBJECT_MINOR_VERSION=0

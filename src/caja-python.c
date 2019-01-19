@@ -174,8 +174,8 @@ caja_python_init_python (void)
 	if (Py_IsInitialized())
 		return TRUE;
 
-  	debug("g_module_open " PY_LIB_LOC "/libpython" PYTHON_VERSION "." G_MODULE_SUFFIX ".1.0");
-	libpython = g_module_open(PY_LIB_LOC "/libpython" PYTHON_VERSION "." G_MODULE_SUFFIX ".1.0", 0);
+  	debug("g_module_open " PY_LIB_LOC "/libpython" PYTHON_VERSION PYTHON_ABIFLAGS "." G_MODULE_SUFFIX ".1.0");
+	libpython = g_module_open(PY_LIB_LOC "/libpython" PYTHON_VERSION PYTHON_ABIFLAGS "." G_MODULE_SUFFIX ".1.0", 0);
 	if (!libpython)
 		g_warning("g_module_open libpython failed: %s", g_module_error());
 
