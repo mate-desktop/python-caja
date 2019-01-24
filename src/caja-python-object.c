@@ -55,7 +55,7 @@ static GObjectClass *parent_class;
 #define STRING_FROMSTRING(str)	PyString_FromString(str)
 #define STRING_ASSTRING(obj)	PyString_AsString(obj)
 #define INT_CHECK(obj)		PyInt_Check(obj)
-#define INT_ASLONG(obj)		PyInt(obj)
+#define INT_ASLONG(obj)		PyInt_AsLong(obj)
 #endif
 
 /* These macros assumes the following things:
