@@ -1,5 +1,11 @@
 import os
-import urllib
+
+try:
+    # Python 3.
+    from urllib.parse import unquote
+except:
+    # Python 2.
+    from urllib import unquote
 
 from gi.repository import GObject, Caja
 
@@ -17,6 +23,6 @@ class ColumnExtension(GObject.GObject, Caja.ColumnProvider, Caja.InfoProvider):
         if file.get_uri_scheme() != 'file':
             return
         
-        filename = urllib.unquote(file.get_uri()[7:])
+        filename = unquote(file.get_uri()[7:])
         
         file.add_string_attribute('block_size', str(os.stat(filename).st_blksize))
