@@ -1,6 +1,12 @@
 # This example is contributed by Martin Enlund
 import os
-import urllib
+
+try:
+    # Python 3.
+    from urllib.parse import unquote
+except:
+    # Python 2.
+    from urllib import unquote
 
 from gi.repository import Caja, GObject, Gio
 
@@ -12,7 +18,7 @@ class OpenTerminalExtension(Caja.MenuProvider, GObject.GObject):
         self.gsettings = Gio.Settings.new(TERMINAL_SCHEMA)
         
     def _open_terminal(self, file):
-        filename = urllib.unquote(file.get_uri()[7:])
+        filename = unquote(file.get_uri()[7:])
         terminal = self.gsettings[TERMINAL_KEY]
 
         os.chdir(filename)

@@ -8,6 +8,7 @@ examples_DATA =					\
 	location-widget-provider.py \
 	open-terminal.py			\
 	md5sum-property-page.py		\
+	mixed.py					\
 	submenu.py                  \
 	update-file-info-async.py
 
