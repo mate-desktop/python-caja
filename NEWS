@@ -1,3 +1,14 @@
+### python-caja 1.21.1
+
+  * Translations update
+  * Fix Python 2 INT_ASLONG function.
+  * Include Python 3 ABI flags in shared library name.
+  * Make Python statements compatible with version 2 and 3.
+  * Implement Python 3 C API compatibility using conditional and macros.
+  * Allow to "make dist" without building the docs.
+  * Fail to build if some referenced symbol cannot be resolved at link time.
+  * Modernize examples
+
 ### python-caja 1.21.0
 
   * Translations update
