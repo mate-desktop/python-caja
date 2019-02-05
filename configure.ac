@@ -38,6 +38,11 @@ GTK_DOC_CHECK(1.9)
 dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
+AC_ARG_WITH([python],
+	    AS_HELP_STRING([--with-python=<python interpreter>],
+			   [Require a specific Python interpreter]),
+	    [test "$withval" -a "$withval" != no -a "$withval" != yes &&
+              PYTHON="$withval"])
 AM_PATH_PYTHON([2.7])
 PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
 PYTHON_LIB_LOC="`pkg-config python-${PYTHON_VERSION} --variable=libdir`"
@@ -113,6 +118,7 @@ AC_OUTPUT([
 echo
 echo " caja-python $PACKAGE_VERSION"
 echo
-echo "        Caja Prefix: ${prefix}"
-echo "      Documentation: ${enable_gtk_doc}"
+echo "      Caja Prefix:    ${prefix}"
+echo "      Python version: ${PYTHON_VERSION}"
+echo "      Documentation:  ${enable_gtk_doc}"
 echo
