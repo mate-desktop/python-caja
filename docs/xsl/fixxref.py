@@ -49,7 +49,7 @@ if __name__ == '__main__':
     try:
         opts, args = getopt.getopt(sys.argv[1:], "i:h:",
                                    ["index-dir=", "html-dir="])
-    except getopt.error, e:
+    except getopt.error as e:
         usage(e)
 
     index_dirs = []
