@@ -1,13 +1,6 @@
 # This example is contributed by Martin Enlund
 import os
 
-try:
-    # Python 3.
-    from urllib.parse import unquote
-except:
-    # Python 2.
-    from urllib import unquote
-
 from gi.repository import Caja, GObject, Gio
 
 TERMINAL_SCHEMA = 'org.mate.applications-terminal'
@@ -18,7 +11,7 @@ class OpenTerminalExtension(Caja.MenuProvider, GObject.GObject):
         self.gsettings = Gio.Settings.new(TERMINAL_SCHEMA)
         
     def _open_terminal(self, file):
-        filename = unquote(file.get_uri()[7:])
+        filename = file.get_location().get_path()
         terminal = self.gsettings[TERMINAL_KEY]
 
         os.chdir(filename)
@@ -42,11 +35,11 @@ class OpenTerminalExtension(Caja.MenuProvider, GObject.GObject):
                                  label='Open Terminal' ,
                                  tip='Open Terminal In %s' % file.get_name())
         item.connect('activate', self.menu_activate_cb, file)
-        return item,
+        return [item]
 
     def get_background_items(self, window, file):
         item = Caja.MenuItem(name='CajaPython::openterminal_item',
                                  label='Open Terminal Here',
                                  tip='Open Terminal In This Directory')
         item.connect('activate', self.menu_background_activate_cb, file)
-        return item,
+        return [item]

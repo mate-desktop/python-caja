@@ -1,12 +1,5 @@
 import hashlib
 
-try:
-    # Python 3.
-    from urllib.parse import unquote
-except:
-    # Python 2.
-    from urllib import unquote
-
 from gi.repository import Caja, Gtk, GObject
 
 class MD5SumPropertyPage(GObject.GObject, Caja.PropertyPageProvider):
@@ -24,7 +17,7 @@ class MD5SumPropertyPage(GObject.GObject, Caja.PropertyPageProvider):
         if file.is_directory():
             return
 
-        filename = unquote(file.get_uri()[7:])
+        filename = file.get_location().get_path()
 
         self.property_label = Gtk.Label('MD5Sum')
         self.property_label.show()
