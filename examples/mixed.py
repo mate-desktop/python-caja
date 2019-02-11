@@ -8,14 +8,6 @@
 
 import os
 
-try:
-    # Python 3.
-    from urllib.parse import unquote, urlparse
-except:
-    # Python 2.
-    from urllib import unquote
-    from urlparse import urlparse
-
 from gi.repository import Caja, GObject, Gtk
 
 
@@ -30,16 +22,8 @@ class Mixed(GObject.GObject,
 
     # Private methods.
 
-    def _basename(self, uri):
-        try:
-            uri = uri.get_uri()         # In case a CajaFile is given.
-        except:
-            pass
-        (scheme, netloc, path, parameters, query, fragment) = urlparse(uri)
-        return os.path.basename(unquote(path))
-
     def _file_has_mixed_name(self, cajafile):
-        name = self._basename(cajafile)
+        name = cajafile.get_name()
         if name.upper() != name and name.lower() != name:
             return 'mixed'
         return ''
@@ -72,7 +56,7 @@ class Mixed(GObject.GObject,
             for cajafile in cajafiles:
                 mixed = cajafile.get_string_attribute('mixed')
                 if mixed:
-                    filename = self._basename(cajafile)
+                    filename = cajafile.get_name()
                     menuitem = Caja.MenuItem(
                         name  = 'Mixed::FileMenu',
                         label = 'Mixed: %s has a mixed case name' % filename,
@@ -107,7 +91,7 @@ class Mixed(GObject.GObject,
                     page_label.show()
                     hbox = Gtk.HBox(homogeneous = False, spacing = 4)
                     hbox.show()
-                    name_label = Gtk.Label(self._basename(cajafile))
+                    name_label = Gtk.Label(cajafile.get_name())
                     name_label.show()
                     comment_label = Gtk.Label('has a mixed-case name')
                     comment_label.show()
@@ -126,9 +110,9 @@ class Mixed(GObject.GObject,
     # Caja.LocationWidgetProvider implementation.
 
     def get_widget(self, uri, window):
-        filename = self._basename(uri)
-        if not self._file_has_mixed_name(filename):
+        cajafile = Caja.FileInfo.create_for_uri(uri)
+        if not self._file_has_mixed_name(cajafile):
             return None
-        label = Gtk.Label('In mixed-case directory %s' % filename)
+        label = Gtk.Label('In mixed-case directory ' + cajafile.get_name())
         label.show()
         return label
