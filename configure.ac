@@ -113,6 +113,8 @@ AC_OUTPUT([
 echo
 echo " caja-python $PACKAGE_VERSION"
 echo
-echo "        Caja Prefix: ${prefix}"
-echo "      Documentation: ${enable_gtk_doc}"
+echo "      Caja Prefix:             ${prefix}"
+echo "      Python version:          ${PYTHON_VERSION}"
+echo "      Python library location: ${PYTHON_LIB_LOC}"
+echo "      Documentation:           ${enable_gtk_doc}"
 echo
