@@ -10,5 +10,6 @@
     <xi:include href="caja-python-menu.xml"/>
     <xi:include href="caja-python-menu-item.xml"/>
     <xi:include href="caja-python-property-page.xml"/>
+    <xi:include href="caja-python-operation-handle.xml"/>
 </chapter>
 

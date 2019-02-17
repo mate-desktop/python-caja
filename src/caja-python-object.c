@@ -411,20 +411,34 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
     CajaOperationResult ret = CAJA_OPERATION_COMPLETE;
     PyObject *py_ret = NULL;
 	PyGILState_STATE state = pyg_gil_state_ensure();
-	PyObject *py_handle = caja_python_boxed_new (_PyCajaOperationHandle_Type, *handle, FALSE);
+	static volatile gssize handle_generator = 1;
 
   	debug_enter();
 
 	CHECK_OBJECT(object);
 
+	*handle = NULL;
+
 	if (PyObject_HasAttrString(object->instance, "update_file_info_full"))
 	{
+        PyObject *py_handle;
+		void *h;
+
+        /* Generate a new handle with a default value. */
+        do {
+            h = (CajaOperationHandle *) g_atomic_pointer_add (&handle_generator, 1);
+        } while (!h);
+        py_handle = caja_python_boxed_new (_PyCajaOperationHandle_Type,
+                                           h, FALSE);
+
+
 		py_ret = PyObject_CallMethod(object->instance,
 									 METHOD_PREFIX "update_file_info_full", "(NNNN)",
 									 pygobject_new((GObject*)provider),
 									 py_handle,
 									 pyg_boxed_new(G_TYPE_CLOSURE, update_complete, TRUE, TRUE),
 									 pygobject_new((GObject*)file));
+		*handle = (void *) ((PyGBoxed *) py_handle)->boxed;
 	}
 	else if (PyObject_HasAttrString(object->instance, "update_file_info"))
 	{
@@ -447,6 +461,9 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
 	}
 
 	ret = INT_ASLONG(py_ret);
+
+    if (!*handle && ret == CAJA_OPERATION_IN_PROGRESS)
+        ret = CAJA_OPERATION_FAILED;
 	
  beach:
  	free_pygobject_data(file, NULL);

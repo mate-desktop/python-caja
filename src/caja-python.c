@@ -22,6 +22,7 @@
 #endif
 
 #include <Python.h>
+#include <structmember.h>
 #include <pygobject.h>
 #include <gmodule.h>
 #include <gtk/gtk.h>
@@ -33,8 +34,12 @@
 
 #if PY_MAJOR_VERSION >= 3
 #define STRING_FROMSTRING(str)	PyUnicode_FromString(str)
+#define INT_FROMSSIZE_T(val)    PyLong_FromSsize_t(val)
+#define INT_ASSSIZE_T(obj)      PyLong_AsSsize_t(obj)
 #else
 #define STRING_FROMSTRING(str)	PyString_FromString(str)
+#define INT_FROMSSIZE_T(val)    PyInt_FromSsize_t(val)
+#define INT_ASSSIZE_T(obj)      PyInt_AsSsize_t(obj)
 #endif
 
 static const GDebugKey caja_python_debug_keys[] = {
@@ -47,6 +52,37 @@ static gboolean caja_python_init_python(void);
 
 static GArray *all_types = NULL;
 static GList *all_pyfiles = NULL;
+
+
+/* Caja.OperationHandle value access. */
+static PyObject *
+caja_operationhandle_get_handle(PyGBoxed *self, void *closure)
+{
+	return INT_FROMSSIZE_T((Py_ssize_t) (size_t) self->boxed);
+}
+
+static int
+caja_operationhandle_set_handle(PyGBoxed *self, PyObject *value, void *closure)
+{
+	Py_ssize_t val = INT_ASSSIZE_T(value);
+
+	if (!PyErr_Occurred()) {
+		if (val) {
+			self->boxed = (void *) val;
+			return 0;
+		}
+		PyErr_SetString(PyExc_ValueError, "invalid operation handle value");
+	}
+	return -1;
+}
+
+static PyGetSetDef caja_operationhandle_handle = {
+	"handle",
+	(getter) caja_operationhandle_get_handle,
+	(setter) caja_operationhandle_set_handle,
+	"Operation handle value",
+	NULL
+};
 
 
 static inline gboolean 
@@ -163,7 +199,7 @@ caja_python_load_dir (GTypeModule *module,
 static gboolean
 caja_python_init_python (void)
 {
-	PyObject *gi, *require_version, *args, *caja;
+	PyObject *gi, *require_version, *args, *caja, *descr;
 	GModule *libpython;
 #if PY_MAJOR_VERSION >= 3
 	wchar_t *argv[] = { L"caja", NULL };
@@ -256,6 +292,21 @@ caja_python_init_python (void)
 	IMPORT(OperationHandle, "OperationHandle");
 
 #undef IMPORT
+
+	/* Add the "handle" member to the OperationHandle type. */
+	descr = PyDescr_NewGetSet(_PyCajaOperationHandle_Type,
+							  &caja_operationhandle_handle);
+    if (!descr) {
+		PyErr_Print();
+		return FALSE;
+	}
+	if (PyDict_SetItemString(_PyCajaOperationHandle_Type->tp_dict,
+						     caja_operationhandle_handle.name, descr)) {
+		Py_DECREF(descr);
+		PyErr_Print();
+		return FALSE;
+	}
+	Py_DECREF(descr);
 	
 	return TRUE;
 }
