@@ -24,7 +24,8 @@ XML_FILES = 							\
 	reference/caja-python-file-info.xml \
 	reference/caja-python-info-provider.xml \
 	reference/caja-python-enum-reference.xml \
-	reference/caja-python-operation-result.xml
+	reference/caja-python-operation-result.xml \
+	reference/caja-python-operation-handle.xml
 
 HTMLdir = $(datadir)/gtk-doc/html/caja-python
 HTML_FILES =						\
@@ -45,6 +46,7 @@ HTML_FILES =						\
 	html/class-caja-python-location-widget-provider.html  \
 	html/class-caja-python-file-info.html  \
 	html/class-caja-python-info-provider.html  \
+	html/class-caja-python-operation-handle.html  \
 	html/caja-python-enum-reference.html \
 	html/enum-caja-python-operation-result.html  \
 	html/caja-python.devhelp
