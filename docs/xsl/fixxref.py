@@ -30,7 +30,7 @@ def fix_xrefs(hdir):
 
 def link_subst(m):
     id, text = m.groups()
-    if anchors.has_key(id):
+    if id in anchors.keys():
         return '<a\nhref="../' + anchors[id] + '"\n>' + text + '</a>'
     return text
 
