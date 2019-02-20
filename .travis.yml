@@ -75,6 +75,7 @@ requires:
 
 variables:
   - CFLAGS="-Wall -Werror=format-security"
+  - PYTHON=python3
 
 after_scripts:
   - make distcheck
