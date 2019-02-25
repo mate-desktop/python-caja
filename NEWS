@@ -1,3 +1,11 @@
+### python-caja 1.22.0
+
+  * fix distcheck when use python3
+  * Initialize Travis CI support
+  * Examples: remove use of Python 2/3 incompatible urllib/urlparse.
+  * Report effective Python version and library location at the end of configure
+  * docs: fix remaining incompatibility with Python 3
+
 ### python-caja 1.21.1
 
   * Translations update

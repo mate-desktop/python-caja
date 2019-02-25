@@ -1,4 +1,4 @@
-AC_INIT([python-caja], [1.21.1],
+AC_INIT([python-caja], [1.22.0],
 	[https://github.com/mate-desktop/python-caja/issues],
 	[python-caja], [http://mate-desktop.org])
 
