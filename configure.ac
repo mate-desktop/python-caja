@@ -39,8 +39,14 @@ dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
 AM_PATH_PYTHON([2.7])
-PKG_CHECK_MODULES([PYTHON], [python-${PYTHON_VERSION}])
-PYTHON_LIB_LOC="`pkg-config python-${PYTHON_VERSION} --variable=libdir`"
+PYTHON_PKG="python-${PYTHON_VERSION}-embed"
+PKG_CHECK_MODULES([PYTHON], [${PYTHON_PKG}],,
+	[
+		PYTHON_PKG=python-${PYTHON_VERSION}
+		PKG_CHECK_MODULES([PYTHON], [${PYTHON_PKG}])
+	]
+)
+PYTHON_LIB_LOC="`pkg-config ${PYTHON_PKG} --variable=libdir`"
 PYTHON_ABIFLAGS=`$PYTHON -c 'import sys; exec("try: print (sys.abiflags)\nexcept: pass")'`
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
