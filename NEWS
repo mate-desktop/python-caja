@@ -1,3 +1,11 @@
+### python-caja 1.23.0
+
+  * tx: sync with transifex
+  * Add support for building with Python 3.8
+  * Change url project's website
+  * Create FUNDING.yml
+  * Make Caja.OperationHandle usable.
+
 ### python-caja 1.22.0
 
   * fix distcheck when use python3
