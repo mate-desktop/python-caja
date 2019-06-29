@@ -1,6 +1,6 @@
 /*
  *  caja-python.c - Caja Python extension
- * 
+ *
  *  Copyright (C) 2004 Johan Dahlin
  *
  *  This library is free software; you can redistribute it and/or

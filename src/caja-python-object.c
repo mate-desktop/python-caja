@@ -17,7 +17,7 @@
  *  Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  *  Author: Dave Camp <dave@ximian.com>
- * 
+ *
  */
 
 #include <config.h>
@@ -138,7 +138,7 @@ free_pygobject_data_list(GList *list)
 {
 	if (list == NULL)
 		return;
-		
+
 	g_list_foreach(list, (GFunc)free_pygobject_data, NULL);
 }
 
@@ -149,7 +149,7 @@ caja_python_boxed_new (PyTypeObject *type, gpointer boxed, gboolean free_on_deal
 	self->gtype = pyg_type_from_object ( (PyObject *) type);
 	self->boxed = boxed;
 	self->free_on_dealloc = free_on_dealloc;
-	
+
 	return (PyObject *) self;
 }
 
@@ -162,20 +162,20 @@ caja_python_object_get_property_pages (CajaPropertyPageProvider *provider,
     PyObject *py_files, *py_ret = NULL;
     GList *ret = NULL;
 	PyGILState_STATE state = pyg_gil_state_ensure();
-	
+
   	debug_enter();
 
 	CHECK_OBJECT(object);
 	CHECK_METHOD_NAME(object->instance);
 
 	CONVERT_LIST(py_files, files);
-	
+
     py_ret = PyObject_CallMethod(object->instance, METHOD_PREFIX METHOD_NAME,
 								 "(N)", py_files);
 	HANDLE_RETVAL(py_ret);
 
 	HANDLE_LIST(py_ret, CajaPropertyPage, "Caja.PropertyPage");
-	
+
  beach:
 	Py_XDECREF(py_ret);
 	pyg_gil_state_release(state);
@@ -247,26 +247,26 @@ caja_python_object_get_file_items (CajaMenuProvider *provider,
     GList *ret = NULL;
     PyObject *py_ret = NULL, *py_files;
 	PyGILState_STATE state = pyg_gil_state_ensure();
-	
+
   	debug_enter();
 
-	CHECK_OBJECT(object);	
+	CHECK_OBJECT(object);
 
 	if (PyObject_HasAttrString(object->instance, "get_file_items_full"))
 	{
 		CONVERT_LIST(py_files, files);
 		py_ret = PyObject_CallMethod(object->instance, METHOD_PREFIX "get_file_items_full",
 									 "(NNN)",
-									 pygobject_new((GObject *)provider), 
-									 pygobject_new((GObject *)window), 
+									 pygobject_new((GObject *)provider),
+									 pygobject_new((GObject *)window),
 									 py_files);
 	}
 	else if (PyObject_HasAttrString(object->instance, "get_file_items"))
 	{
 		CONVERT_LIST(py_files, files);
 		py_ret = PyObject_CallMethod(object->instance, METHOD_PREFIX METHOD_NAME,
-									 "(NN)", 
-									 pygobject_new((GObject *)window), 
+									 "(NN)",
+									 pygobject_new((GObject *)window),
 									 py_files);
 	}
 	else
@@ -296,7 +296,7 @@ caja_python_object_get_background_items (CajaMenuProvider *provider,
     GList *ret = NULL;
     PyObject *py_ret = NULL;
 	PyGILState_STATE state = pyg_gil_state_ensure();
-	
+
   	debug_enter();
 
 	CHECK_OBJECT(object);
@@ -324,7 +324,7 @@ caja_python_object_get_background_items (CajaMenuProvider *provider,
 	HANDLE_RETVAL(py_ret);
 
 	HANDLE_LIST(py_ret, CajaMenuItem, "Caja.MenuItem");
-	
+
  beach:
 	free_pygobject_data(file, NULL);
 	Py_XDECREF(py_ret);
@@ -350,7 +350,7 @@ caja_python_object_get_columns (CajaColumnProvider *provider)
 	PyGILState_STATE state = pyg_gil_state_ensure();                                    \
 
 	debug_enter();
-		
+
 	CHECK_OBJECT(object);
 	CHECK_METHOD_NAME(object->instance);
 
@@ -360,7 +360,7 @@ caja_python_object_get_columns (CajaColumnProvider *provider)
 	HANDLE_RETVAL(py_ret);
 
 	HANDLE_LIST(py_ret, CajaColumn, "Caja.Column");
-	
+
  beach:
 	if (py_ret != NULL)
 		Py_XDECREF(py_ret);
@@ -450,7 +450,7 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
 	{
 		goto beach;
 	}
-	
+
 	HANDLE_RETVAL(py_ret);
 
 	if (!INT_CHECK(py_ret))
@@ -464,7 +464,7 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
 
     if (!*handle && ret == CAJA_OPERATION_IN_PROGRESS)
         ret = CAJA_OPERATION_FAILED;
-	
+
  beach:
  	free_pygobject_data(file, NULL);
 	Py_XDECREF(py_ret);
@@ -480,7 +480,7 @@ caja_python_object_info_provider_iface_init (CajaInfoProviderIface *iface)
 	iface->update_file_info = caja_python_object_update_file_info;
 }
 
-static void 
+static void
 caja_python_object_instance_init (CajaPythonObject *object)
 {
 	CajaPythonObjectClass *class;
@@ -509,20 +509,20 @@ caja_python_object_class_init (CajaPythonObjectClass *class,
 	debug_enter();
 
 	parent_class = g_type_class_peek_parent (class);
-	
+
 	class->type = (PyObject*)class_data;
-	
+
 	G_OBJECT_CLASS (class)->finalize = caja_python_object_finalize;
 }
 
-GType 
-caja_python_object_get_type (GTypeModule *module, 
+GType
+caja_python_object_get_type (GTypeModule *module,
 								 PyObject 	*type)
 {
 	GTypeInfo *info;
 	const char *type_name;
 	GType gtype;
-	  
+
 	static const GInterfaceInfo property_page_provider_iface_info = {
 		(GInterfaceInitFunc) caja_python_object_property_page_provider_iface_init,
 		NULL,
@@ -555,7 +555,7 @@ caja_python_object_get_type (GTypeModule *module,
 
 	debug_enter_args("type=%s", STRING_ASSTRING(PyObject_GetAttrString(type, "__name__")));
 	info = g_new0 (GTypeInfo, 1);
-	
+
 	info->class_size = sizeof (CajaPythonObjectClass);
 	info->class_init = (GClassInitFunc)caja_python_object_class_init;
 	info->instance_size = sizeof (CajaPythonObject);
@@ -566,15 +566,15 @@ caja_python_object_get_type (GTypeModule *module,
 
 	type_name = g_strdup_printf("%s+CajaPython",
 								STRING_ASSTRING(PyObject_GetAttrString(type, "__name__")));
-		
-	gtype = g_type_module_register_type (module, 
+
+	gtype = g_type_module_register_type (module,
 										 G_TYPE_OBJECT,
 										 type_name,
 										 info, 0);
 
 	if (PyObject_IsSubclass(type, (PyObject*)&PyCajaPropertyPageProvider_Type))
 	{
-		g_type_module_add_interface (module, gtype, 
+		g_type_module_add_interface (module, gtype,
 									 CAJA_TYPE_PROPERTY_PAGE_PROVIDER,
 									 &property_page_provider_iface_info);
 	}
@@ -585,27 +585,27 @@ caja_python_object_get_type (GTypeModule *module,
 									 CAJA_TYPE_LOCATION_WIDGET_PROVIDER,
 									 &location_widget_provider_iface_info);
 	}
-	
+
 	if (PyObject_IsSubclass(type, (PyObject*)&PyCajaMenuProvider_Type))
 	{
-		g_type_module_add_interface (module, gtype, 
+		g_type_module_add_interface (module, gtype,
 									 CAJA_TYPE_MENU_PROVIDER,
 									 &menu_provider_iface_info);
 	}
 
 	if (PyObject_IsSubclass(type, (PyObject*)&PyCajaColumnProvider_Type))
 	{
-		g_type_module_add_interface (module, gtype, 
+		g_type_module_add_interface (module, gtype,
 									 CAJA_TYPE_COLUMN_PROVIDER,
 									 &column_provider_iface_info);
 	}
-	
+
 	if (PyObject_IsSubclass(type, (PyObject*)&PyCajaInfoProvider_Type))
 	{
-		g_type_module_add_interface (module, gtype, 
+		g_type_module_add_interface (module, gtype,
 									 CAJA_TYPE_INFO_PROVIDER,
 									 &info_provider_iface_info);
 	}
-	
+
 	return gtype;
 }

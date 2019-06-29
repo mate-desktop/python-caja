@@ -1,7 +1,7 @@
 /*
- *  caja-python-object.h - Generation of wrapper objects for caja 
+ *  caja-python-object.h - Generation of wrapper objects for caja
  *                           extension objects in python.
- * 
+ *
  *  Copyright (C) 2003 Novell, Inc.
  *
  *  This library is free software; you can redistribute it and/or
@@ -19,7 +19,7 @@
  *  Software Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA.
  *
  *  Author: Dave Camp <dave@ximian.com>
- * 
+ *
  */
 
 #ifndef CAJA_PYTHON_OBJECT_H

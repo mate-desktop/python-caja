@@ -85,7 +85,7 @@ static PyGetSetDef caja_operationhandle_handle = {
 };
 
 
-static inline gboolean 
+static inline gboolean
 np_init_pygobject(void)
 {
     PyObject *gobject = pygobject_init (PYGOBJECT_MAJOR_VERSION, PYGOBJECT_MINOR_VERSION, PYGOBJECT_MICRO_VERSION);
@@ -99,7 +99,7 @@ np_init_pygobject(void)
 }
 
 static void
-caja_python_load_file(GTypeModule *type_module, 
+caja_python_load_file(GTypeModule *type_module,
 						  const gchar *filename)
 {
 	PyObject *main_module, *main_locals, *locals, *key, *value;
@@ -148,7 +148,7 @@ caja_python_load_file(GTypeModule *type_module,
 }
 
 static void
-caja_python_load_dir (GTypeModule *module, 
+caja_python_load_dir (GTypeModule *module,
 						  const char  *dirname)
 {
 	GDir *dir;
@@ -156,11 +156,11 @@ caja_python_load_dir (GTypeModule *module,
 	gboolean initialized = FALSE;
 
 	debug_enter_args("dirname=%s", dirname);
-	
+
 	dir = g_dir_open(dirname, 0, NULL);
 	if (!dir)
 		return;
-			
+
 	while ((name = g_dir_read_name(dir)))
 	{
 		if (g_str_has_suffix(name, ".py"))
@@ -175,7 +175,7 @@ caja_python_load_dir (GTypeModule *module,
 			if (!initialized)
 			{
 				PyObject *sys_path, *py_path;
-				
+
 				/* n-p python part is initialized on demand (or not
 				* at all if no extensions are found) */
 				if (!caja_python_init_python())
@@ -184,7 +184,7 @@ caja_python_load_dir (GTypeModule *module,
 					g_dir_close(dir);
 					break;
 				}
-				
+
 				/* sys.path.insert(0, dirname) */
 				sys_path = PySys_GetObject("path");
 				py_path = STRING_FROMSTRING(dirname);
@@ -193,7 +193,7 @@ caja_python_load_dir (GTypeModule *module,
 			}
 			caja_python_load_file(module, modulename);
 		}
-	}	
+	}
 }
 
 static gboolean
@@ -222,7 +222,7 @@ caja_python_init_python (void)
 		PyErr_Print();
 		return FALSE;
 	}
-	
+
 	debug("PySys_SetArgv");
 	PySys_SetArgv(1, argv);
 	if (PyErr_Occurred())
@@ -307,7 +307,7 @@ caja_python_init_python (void)
 		return FALSE;
 	}
 	Py_DECREF(descr);
-	
+
 	return TRUE;
 }
 
@@ -334,11 +334,11 @@ caja_module_initialize(GTypeModule *module)
 	caja_python_load_dir(module, DATADIR "/caja-python/extensions");
 
 	// Look in XDG_DATA_DIR, ~/.local/share/caja-python/extensions
-	user_extensions_dir = g_build_filename(g_get_user_data_dir(), 
+	user_extensions_dir = g_build_filename(g_get_user_data_dir(),
 		"caja-python", "extensions", NULL);
 	caja_python_load_dir(module, user_extensions_dir);
 }
- 
+
 void
 caja_module_shutdown(void)
 {
@@ -356,7 +356,7 @@ caja_module_list_types(const GType **types,
 						   int          *num_types)
 {
 	debug_enter();
-	
+
 	*types = (GType*)all_types->data;
 	*num_types = all_types->len;
 }
