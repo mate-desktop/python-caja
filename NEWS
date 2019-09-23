@@ -1,3 +1,8 @@
+### python-caja 1.22.1
+
+  * Translations update
+  * Add support for building with Python 3.8
+
 ### python-caja 1.22.0
 
   * fix distcheck when use python3
