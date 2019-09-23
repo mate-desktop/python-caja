@@ -15,14 +15,11 @@ AC_PROG_CC
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 
-dnl Check for pkgconfig first
-AC_CHECK_PROG(HAVE_PKGCONFIG, pkg-config, yes, no)
-AC_PATH_PROG(PKG_CONFIG, pkg-config, no)
-
+PKG_PROG_PKG_CONFIG
 dnl Give error and exit if we dont have pkgconfig
-if test "x$HAVE_PKGCONFIG" = "xno"; then
+AS_IF([test "x$PKG_CONFIG" = "x"],[
   AC_MSG_ERROR([you need to have pkgconfig installed !])
-fi
+])
 
 dnl i18n
 GETTEXT_PACKAGE=python-caja
@@ -46,7 +43,7 @@ PKG_CHECK_MODULES([PYTHON], [${PYTHON_PKG}],,
 		PKG_CHECK_MODULES([PYTHON], [${PYTHON_PKG}])
 	]
 )
-PYTHON_LIB_LOC="`pkg-config ${PYTHON_PKG} --variable=libdir`"
+PYTHON_LIB_LOC="`${PKG_CONFIG} ${PYTHON_PKG} --variable=libdir`"
 PYTHON_ABIFLAGS=`$PYTHON -c 'import sys; exec("try: print (sys.abiflags)\nexcept: pass")'`
 AC_SUBST(PYTHON_LIBS)
 AC_SUBST(PYTHON_CFLAGS)
@@ -86,9 +83,9 @@ AC_ARG_WITH(cajadir,
 	AS_HELP_STRING([--with-cajadir=DIR],[Installation path for Caja extension @<:@auto@:>@]),
 	[ac_with_cajadir=$withval],
 	[ac_with_cajadir=""])
-if test "${ac_with_cajadir}" = ""; then
+AS_IF([test "${ac_with_cajadir}" = ""],[
 	ac_with_cajadir=`$PKG_CONFIG --variable=extensiondir libcaja-extension`
-fi
+])
 
 AC_MSG_NOTICE([installing caja plugin in ${ac_with_cajadir}])
 AC_SUBST([CAJA_EXTENSION_DIR], [${ac_with_cajadir}])
@@ -96,14 +93,14 @@ AC_SUBST([CAJA_EXTENSION_DIR], [${ac_with_cajadir}])
 dnl ---------------------------------
 dnl Check for gtk-doc dependencies
 dnl ---------------------------------
-if test "${enable_gtk_doc}" != no; then
+AS_IF([test "${enable_gtk_doc}" != no],[
     dnl Check for xsltproc
     AC_PATH_PROG([XSLTPROC], [xsltproc])
-    if test -z "$XSLTPROC"; then
+    AS_IF([test -z "$XSLTPROC"],[
         echo " disabling generation of docs"
         enable_gtk_doc=no
-    fi
-fi
+    ])
+])
 
 AC_OUTPUT([
   Makefile
