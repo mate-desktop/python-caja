@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Michael Findlay <translate@cobber-linux.org>, 2019
+# Ольга Смирнова, 2019
 # 
 #, fuzzy
 msgid ""
@@ -13,12 +13,12 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2018-12-26 13:35+0100\n"
 "PO-Revision-Date: 2019-03-16 20:18+0000\n"
-"Last-Translator: Michael Findlay <translate@cobber-linux.org>, 2019\n"
-"Language-Team: English (Australia) (https://www.transifex.com/mate/teams/13566/en_AU/)\n"
+"Last-Translator: Ольга Смирнова, 2019\n"
+"Language-Team: Interlingue (https://www.transifex.com/mate/teams/13566/ie/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en_AU\n"
+"Language: ie\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: ../libcaja-python.caja-extension.in.h:1
@@ -27,4 +27,4 @@ msgstr "Python"
 
 #: ../libcaja-python.caja-extension.in.h:2
 msgid "Allows to use Python extensions"
-msgstr "Allows you to use Python extensions"
+msgstr "Permisse usar extensiones scrit in Python"
