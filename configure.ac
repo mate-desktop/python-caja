@@ -35,7 +35,7 @@ GTK_DOC_CHECK(1.9)
 dnl **************************************************
 dnl * Check for Python
 dnl **************************************************
-AM_PATH_PYTHON([2.7])
+AM_PATH_PYTHON([3.6])
 PYTHON_PKG="python-${PYTHON_VERSION}-embed"
 PKG_CHECK_MODULES([PYTHON], [${PYTHON_PKG}],,
 	[
