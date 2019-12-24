@@ -26,9 +26,8 @@ GETTEXT_PACKAGE=python-caja
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [GetText Package])
 
-AM_GLIB_GNU_GETTEXT
-IT_PROG_INTLTOOL([0.35.0])
-
+AM_GNU_GETTEXT_VERSION([0.19.8])
+AM_GNU_GETTEXT([external])
 dnl Check for gtk-doc
 GTK_DOC_CHECK(1.9)
 
@@ -104,7 +103,7 @@ AS_IF([test "${enable_gtk_doc}" != no],[
 
 AC_OUTPUT([
   Makefile
-  libcaja-python.caja-extension.in
+  libcaja-python.caja-extension.desktop.in
   examples/Makefile
   src/Makefile
   caja-python.pc
