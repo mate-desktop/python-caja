@@ -49,6 +49,7 @@ requires:
   debian:
     # Useful URL: https://github.com/mate-desktop/debian-packages
     # Useful URL: https://salsa.debian.org/debian-mate-team/python-caja
+    - autopoint
     - git
     - gtk-doc-tools
     - libcaja-extension-dev
@@ -71,6 +72,7 @@ requires:
     - redhat-rpm-config
 
   ubuntu:
+    - autopoint
     - git
     - gtk-doc-tools
     - libcaja-extension-dev
