@@ -32,16 +32,6 @@
 
 #include <libcaja-extension/caja-extension-types.h>
 
-#if PY_MAJOR_VERSION >= 3
-#define STRING_FROMSTRING(str)	PyUnicode_FromString(str)
-#define INT_FROMSSIZE_T(val)    PyLong_FromSsize_t(val)
-#define INT_ASSSIZE_T(obj)      PyLong_AsSsize_t(obj)
-#else
-#define STRING_FROMSTRING(str)	PyString_FromString(str)
-#define INT_FROMSSIZE_T(val)    PyInt_FromSsize_t(val)
-#define INT_ASSSIZE_T(obj)      PyInt_AsSsize_t(obj)
-#endif
-
 static const GDebugKey caja_python_debug_keys[] = {
 	{"misc", CAJA_PYTHON_DEBUG_MISC},
 };
@@ -58,13 +48,13 @@ static GList *all_pyfiles = NULL;
 static PyObject *
 caja_operationhandle_get_handle(PyGBoxed *self, void *closure)
 {
-	return INT_FROMSSIZE_T((Py_ssize_t) (size_t) self->boxed);
+	return PyLong_FromSsize_t((Py_ssize_t) (size_t) self->boxed);
 }
 
 static int
 caja_operationhandle_set_handle(PyGBoxed *self, PyObject *value, void *closure)
 {
-	Py_ssize_t val = INT_ASSSIZE_T(value);
+	Py_ssize_t val = PyLong_AsSsize_t(value);
 
 	if (!PyErr_Occurred()) {
 		if (val) {
@@ -187,7 +177,7 @@ caja_python_load_dir (GTypeModule *module,
 
 				/* sys.path.insert(0, dirname) */
 				sys_path = PySys_GetObject("path");
-				py_path = STRING_FROMSTRING(dirname);
+				py_path = PyUnicode_FromString(dirname);
 				PyList_Insert(sys_path, 0, py_path);
 				Py_DECREF(py_path);
 			}
@@ -201,11 +191,7 @@ caja_python_init_python (void)
 {
 	PyObject *gi, *require_version, *args, *caja, *descr;
 	GModule *libpython;
-#if PY_MAJOR_VERSION >= 3
 	wchar_t *argv[] = { L"caja", NULL };
-#else
-	char *argv[] = { "caja", NULL };
-#endif
 
 	if (Py_IsInitialized())
 		return TRUE;
