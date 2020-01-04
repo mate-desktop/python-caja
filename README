@@ -15,7 +15,7 @@ Requirements
 ============
 
 Caja      1.17.1
-Python    2.7
+Python    3.6
 PyGObject 3.0.0
 
 Problems
