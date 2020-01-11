@@ -16,7 +16,7 @@ install:
   - ./docker-build --name ${DISTRO} --config .travis.yml --install
 
 script:
-  - ./docker-build --name ${DISTRO} --verbose --config .travis.yml --build autotools
+  - ./docker-build --name ${DISTRO} --verbose --config .travis.yml --build scripts
 
 deploy:
   - provider: script
@@ -39,6 +39,7 @@ requires:
   archlinux:
     # Useful URL: https://git.archlinux.org/svntogit/community.git/tree/python-caja
     - caja
+    - clang
     - gcc
     - git
     - make
@@ -50,6 +51,9 @@ requires:
     # Useful URL: https://github.com/mate-desktop/debian-packages
     # Useful URL: https://salsa.debian.org/debian-mate-team/python-caja
     - autopoint
+    - clang
+    - clang-tools
+    - gcc
     - git
     - gtk-doc-tools
     - libcaja-extension-dev
@@ -63,6 +67,8 @@ requires:
   fedora:
     # Useful URL: https://src.fedoraproject.org/cgit/rpms/python-caja.git
     - caja-devel
+    - clang
+    - clang-analyzer
     - gcc
     - git
     - make
@@ -73,6 +79,8 @@ requires:
 
   ubuntu:
     - autopoint
+    - clang
+    - clang-tools
     - git
     - gtk-doc-tools
     - libcaja-extension-dev
@@ -86,6 +94,31 @@ requires:
 variables:
   - CFLAGS="-Wall -Werror=format-security -Wredundant-decls"
   - PYTHON=python3
+  - 'CHECKERS="
+    -enable-checker deadcode.DeadStores
+    -enable-checker alpha.deadcode.UnreachableCode
+    -enable-checker alpha.core.CastSize
+    -enable-checker alpha.core.CastToStruct
+    -enable-checker alpha.core.IdenticalExpr
+    -enable-checker alpha.core.SizeofPtr
+    -enable-checker alpha.security.ArrayBoundV2
+    -enable-checker alpha.security.MallocOverflow
+    -enable-checker alpha.security.ReturnPtrRange
+    -enable-checker alpha.unix.SimpleStream
+    -enable-checker alpha.unix.cstring.BufferOverlap
+    -enable-checker alpha.unix.cstring.NotNullTerminated
+    -enable-checker alpha.unix.cstring.OutOfBounds
+    -enable-checker alpha.core.FixedAddr
+    -enable-checker security.insecureAPI.strcpy"'
+
+build_scripts:
+  - ./autogen.sh
+  - scan-build $CHECKERS ./configure
+  - if [ $CPU_COUNT -gt 1 ]; then
+  -     scan-build $CHECKERS --keep-cc -o html-report make -j $CPU_COUNT
+  - else
+  -     scan-build $CHECKERS --keep-cc -o html-report make
+  - fi
 
 after_scripts:
   - make distcheck
