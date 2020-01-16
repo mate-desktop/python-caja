@@ -121,7 +121,6 @@ requires:
 
 variables:
   - CFLAGS="-Wall -Werror=format-security -Wredundant-decls"
-  - PYTHON=python3
   - 'CHECKERS="
     -enable-checker deadcode.DeadStores
     -enable-checker alpha.deadcode.UnreachableCode
