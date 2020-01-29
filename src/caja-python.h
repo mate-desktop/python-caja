@@ -26,6 +26,12 @@
 #include <glib/gprintf.h>
 #include <Python.h>
 
+#if defined(NO_IMPORT)
+#define CAJA_PYTHON_VAR_DECL extern
+#else
+#define CAJA_PYTHON_VAR_DECL
+#endif
+
 typedef enum {
     CAJA_PYTHON_DEBUG_MISC = 1 << 0,
 } CajaPythonDebug;
@@ -40,37 +46,37 @@ extern CajaPythonDebug caja_python_debug;
                                      g_printf("%s: entered " x "\n", __FUNCTION__, y); }
 
 
-PyTypeObject *_PyGtkWidget_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyGtkWidget_Type;
 #define PyGtkWidget_Type (*_PyGtkWidget_Type)
 
-PyTypeObject *_PyCajaColumn_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaColumn_Type;
 #define PyCajaColumn_Type (*_PyCajaColumn_Type)
 
-PyTypeObject *_PyCajaColumnProvider_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaColumnProvider_Type;
 #define PyCajaColumnProvider_Type (*_PyCajaColumnProvider_Type)
 
-PyTypeObject *_PyCajaInfoProvider_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaInfoProvider_Type;
 #define PyCajaInfoProvider_Type (*_PyCajaInfoProvider_Type)
 
-PyTypeObject *_PyCajaLocationWidgetProvider_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaLocationWidgetProvider_Type;
 #define PyCajaLocationWidgetProvider_Type (*_PyCajaLocationWidgetProvider_Type)
 
-PyTypeObject *_PyCajaMenu_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaMenu_Type;
 #define PyCajaMenu_Type (*_PyCajaMenu_Type)
 
-PyTypeObject *_PyCajaMenuItem_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaMenuItem_Type;
 #define PyCajaMenuItem_Type (*_PyCajaMenuItem_Type)
 
-PyTypeObject *_PyCajaMenuProvider_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaMenuProvider_Type;
 #define PyCajaMenuProvider_Type (*_PyCajaMenuProvider_Type)
 
-PyTypeObject *_PyCajaPropertyPage_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaPropertyPage_Type;
 #define PyCajaPropertyPage_Type (*_PyCajaPropertyPage_Type)
 
-PyTypeObject *_PyCajaPropertyPageProvider_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaPropertyPageProvider_Type;
 #define PyCajaPropertyPageProvider_Type (*_PyCajaPropertyPageProvider_Type)
 
-PyTypeObject *_PyCajaOperationHandle_Type;
+CAJA_PYTHON_VAR_DECL PyTypeObject *_PyCajaOperationHandle_Type;
 #define PyCajaOperationHandle_Type (*_PyCajaOperationHandle_Type)
 
 #endif /* CAJA_PYTHON_H */
