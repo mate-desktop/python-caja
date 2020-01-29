@@ -22,6 +22,8 @@
 
 #include <config.h>
 
+#define NO_IMPORT
+
 #include "caja-python-object.h"
 #include "caja-python.h"
 
