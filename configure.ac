@@ -6,6 +6,7 @@ AC_SUBST(PACKAGE)
 AC_SUBST(VERSION)
 
 AM_INIT_AUTOMAKE(1.10 dist-xz no-dist-gzip check-news)
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
