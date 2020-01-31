@@ -1,6 +1,17 @@
+### python-caja 1.23.1
+
+  * Translations update
+  * configure: get quieter output from make
+  * Get rid of commons
+  * migrate from intltools to gettext
+  * README: update required Python version
+  * drop Python 2 support (#50)
+  * Make configure.ac cross compile safe.
+  * Remove trailing whitespaces
+
 ### python-caja 1.23.0
 
-  * tx: sync with transifex
+  * Translations update
   * Add support for building with Python 3.8
   * Change url project's website
   * Create FUNDING.yml
