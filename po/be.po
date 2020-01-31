@@ -1,17 +1,16 @@
 # SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR MATE Desktop Environment team
+# This file is distributed under the same license as the python-caja package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
 # Mihail Varantsou <meequz@gmail.com>, 2018
 # 
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: MATE Desktop Environment\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-12-26 13:35+0100\n"
+"Project-Id-Version: python-caja 1.23.0\n"
+"Report-Msgid-Bugs-To: https://github.com/mate-desktop/python-caja/issues\n"
+"POT-Creation-Date: 2020-01-07 00:41+0100\n"
 "PO-Revision-Date: 2018-03-12 10:42+0000\n"
 "Last-Translator: Mihail Varantsou <meequz@gmail.com>, 2018\n"
 "Language-Team: Belarusian (https://www.transifex.com/mate/teams/13566/be/)\n"
@@ -21,10 +20,16 @@ msgstr ""
 "Language: be\n"
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
-#: ../libcaja-python.caja-extension.in.h:1
+#. Translators: Do NOT translate or transliterate this text (this is an icon
+#. file name)!
+#: libcaja-python.caja-extension.desktop.in:4
+msgid "text-x-python"
+msgstr ""
+
+#: libcaja-python.caja-extension.desktop.in:5
 msgid "Python"
 msgstr "Python"
 
-#: ../libcaja-python.caja-extension.in.h:2
+#: libcaja-python.caja-extension.desktop.in:6
 msgid "Allows to use Python extensions"
 msgstr "Дазваляе выкарыстоўваць пашырэнні на Python"
