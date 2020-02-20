@@ -1,0 +1,68 @@
+##########################################################
+# THE FOLLOWING LINES IS USED BY docker-build
+##########################################################
+requires:
+  archlinux:
+    # Useful URL: https://git.archlinux.org/svntogit/community.git/tree/python-caja
+    - caja
+    - gcc
+    - git
+    - make
+    - mate-common
+    - python-gobject
+    - which
+
+  debian:
+    # Useful URL: https://github.com/mate-desktop/debian-packages
+    # Useful URL: https://salsa.debian.org/debian-mate-team/python-caja
+    - git
+    - gtk-doc-tools
+    - libcaja-extension-dev
+    - libgirepository1.0-dev
+    - make
+    - mate-common
+    - python3-dev
+    - python-gi-dev
+    - quilt
+
+  fedora:
+    # Useful URL: https://src.fedoraproject.org/cgit/rpms/python-caja.git
+    - caja-devel
+    - gcc
+    - git
+    - make
+    - mate-common
+    - pygobject3-devel
+    - python3-devel
+    - redhat-rpm-config
+
+  ubuntu:
+    - git
+    - gtk-doc-tools
+    - libcaja-extension-dev
+    - libgirepository1.0-dev
+    - make
+    - mate-common
+    - python3-dev
+    - python-gi-dev
+    - quilt
+
+variables:
+  - CFLAGS="-Wall -Werror=format-security"
+  - PYTHON=python3
+
+after_scripts:
+  - make distcheck
+
+releases:
+  draft: false
+  prerelease: false
+  checksum: true
+  file_glob: true
+  files: python-caja-*.tar.xz
+  github_release:
+    tags: true
+    overwrite: true
+    base_version: 1.20.0
+    notify_servers:
+      - https://release.mate-desktop.org/release
