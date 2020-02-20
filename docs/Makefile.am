@@ -94,7 +94,7 @@ $(HTML_FILES): $(REFERENCE_DEPS)
 		 --stringparam gtkdoc.bookname "caja-python" \
 		 --stringparam gtkdoc.version ${REF_VERSION} \
 		 $(HTML_STYLE) $(srcdir)/reference/caja-python-ref.xml
-	$(FIXXREF) -i xsl $(BUILDDIR)/html
+	$(PYTHON) $(FIXXREF) -i xsl $(BUILDDIR)/html
 	touch $@
 
 endif
