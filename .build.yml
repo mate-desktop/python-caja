@@ -7,6 +7,7 @@ requires:
     - caja
     - gcc
     - git
+    - intltool
     - make
     - mate-common
     - python-gobject
