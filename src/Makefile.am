@@ -1,3 +1,5 @@
+NULL =
+
 caja_extensiondir=$(CAJA_EXTENSION_DIR)
 
 caja_extension_LTLIBRARIES = libcaja-python.la
@@ -17,13 +19,13 @@ libcaja_python_la_CPPFLAGS = \
 	-DPYTHON_VERSION=\"$(PYTHON_VERSION)\" \
 	-DPYTHON_ABIFLAGS=\"$(PYTHON_ABIFLAGS)\" \
 	-DPY_LIB_LOC="\"$(PYTHON_LIB_LOC)\"" \
-	$(CAJA_PYTHON_CFLAGS) \
-	$(AM_CPPFLAGS)
+	$(NULL)
 
 libcaja_python_la_CFLAGS = \
-	$(PYTHON_CFLAGS)
+	$(PYTHON_CFLAGS) \
 	$(CAJA_PYTHON_CFLAGS) \
-	$(AM_CFLAGS)
+	$(WARN_CFLAGS) \
+	$(NULL)
 
 libcaja_python_la_LDFLAGS = -module -avoid-version -Wl,-z,defs
 libcaja_python_la_LIBADD  = $(PYTHON_LIBS) $(CAJA_PYTHON_LIBS)
