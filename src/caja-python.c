@@ -172,6 +172,7 @@ caja_python_load_dir (GTypeModule *module,
 				{
 					g_warning("caja_python_init_python failed");
 					g_dir_close(dir);
+					g_free(modulename);
 					break;
 				}
 
@@ -182,6 +183,7 @@ caja_python_load_dir (GTypeModule *module,
 				Py_DECREF(py_path);
 			}
 			caja_python_load_file(module, modulename);
+			g_free(modulename);
 		}
 	}
 }
