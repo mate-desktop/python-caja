@@ -100,3 +100,5 @@ $(HTML_FILES): $(REFERENCE_DEPS)
 	touch $@
 
 endif
+
+-include $(top_srcdir)/git.mk
