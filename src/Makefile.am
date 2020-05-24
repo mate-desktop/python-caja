@@ -29,3 +29,5 @@ libcaja_python_la_CFLAGS = \
 
 libcaja_python_la_LDFLAGS = -module -avoid-version -Wl,-z,defs
 libcaja_python_la_LIBADD  = $(PYTHON_LIBS) $(CAJA_PYTHON_LIBS)
+
+-include $(top_srcdir)/git.mk

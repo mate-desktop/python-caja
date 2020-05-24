@@ -13,3 +13,5 @@ examples_DATA =					\
 	update-file-info-async.py
 
 EXTRA_DIST = README $(examples_DATA)
+
+-include $(top_srcdir)/git.mk
