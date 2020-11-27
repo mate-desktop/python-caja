@@ -156,7 +156,7 @@ caja_python_load_dir (GTypeModule *module,
 		if (g_str_has_suffix(name, ".py"))
 		{
 			char *modulename;
-			int len;
+			size_t len;
 
 			len = strlen(name) - 3;
 			modulename = g_new0(char, len + 1 );
@@ -341,12 +341,12 @@ caja_module_shutdown(void)
 
 void
 caja_module_list_types(const GType **types,
-						   int          *num_types)
+                       int          *num_types)
 {
 	debug_enter();
 
 	*types = (GType*)all_types->data;
-	*num_types = all_types->len;
+	*num_types = (int) all_types->len;
 }
 
 void
