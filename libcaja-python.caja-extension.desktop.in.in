@@ -6,4 +6,4 @@ Description=Allows to use Python extensions
 Author=Perberos <perberos@gmail.com>;Stefano Karapetsas <stefano@karapetsas.com>;Steve Zesch <stevezesch2@gmail.com>;Johan Dahlin <johan@gnome.org>;Dave Camp <dave@ximian.com>;Calvin Gaisford <cgaisford@novell.com>
 Copyright=Copyright (C) 2004-2005 Johan Dahlin
 Version=@VERSION@
-Website=https://mate-desktop.org/
+Website=@PACKAGE_URL@
