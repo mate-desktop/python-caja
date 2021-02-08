@@ -115,11 +115,14 @@ AC_OUTPUT([
   po/Makefile.in
 ])
 
-echo
-echo " caja-python $PACKAGE_VERSION"
-echo
-echo "      Caja Prefix:             ${prefix}"
-echo "      Python version:          ${PYTHON_VERSION}"
-echo "      Python library location: ${PYTHON_LIB_LOC}"
-echo "      Documentation:           ${enable_gtk_doc}"
-echo
+echo "
+Configure summary:
+
+    ${PACKAGE_STRING}
+    `echo $PACKAGE_STRING | sed "s/./=/g"`
+
+    Caja Prefix .................: ${prefix}
+    Python version ..............: ${PYTHON_VERSION}
+    Python library location .....: ${PYTHON_LIB_LOC}
+    Documentation ...............: ${enable_gtk_doc}
+"
