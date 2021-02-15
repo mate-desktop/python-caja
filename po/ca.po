@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Francesc Famadas <kiski97@gmail.com>, 2018
+# Francesc Famadas, 2018
 # Robert Antoni Buj Gelonch <rbuj@fedoraproject.org>, 2020
 # 
 msgid ""
