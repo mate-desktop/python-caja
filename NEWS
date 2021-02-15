@@ -1,3 +1,15 @@
+### python-caja 1.25.0
+
+  * Translations update
+    build: show configure summary using a pretty format
+    build: Use PACKAGE_URL variable
+    caja-python: remove warnings about conversion
+    Remove USE_MATE2_MACROS from autogen.sh (legacy)
+    add git.mk to generate .gitignore
+    caja-python: Fix memory leak reported by scan-build
+    build: silent build warnings for distcheck
+    build: Use WARN_CFLAGS variable
+
 ### python-caja 1.24.0
 
   * Translations update
