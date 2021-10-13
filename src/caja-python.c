@@ -130,7 +130,7 @@ caja_python_load_file(GTypeModule *type_module,
 			gtype = caja_python_object_get_type(type_module, value);
 			g_array_append_val(all_types, gtype);
 
-			all_pyfiles = g_list_append(all_pyfiles, (gchar*)filename);
+			all_pyfiles = g_list_append(all_pyfiles, g_strdup(filename));
 		}
 	}
 
@@ -336,7 +336,7 @@ caja_module_shutdown(void)
 		Py_Finalize();
 
 	g_array_free(all_types, TRUE);
-	g_list_free (all_pyfiles);
+	g_list_free_full(all_pyfiles, g_free);
 }
 
 void
