@@ -107,7 +107,7 @@ caja_python_load_file(GTypeModule *type_module,
 	}
 
 	main_locals = PyModule_GetDict(main_module);
-	module = PyImport_ImportModuleEx((char *) filename, main_locals, main_locals, NULL);
+	module = PyImport_ImportModuleEx(filename, main_locals, main_locals, NULL);
 	if (!module)
 	{
 		PyErr_Print();
