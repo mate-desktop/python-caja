@@ -110,7 +110,6 @@ static GObjectClass *parent_class;
     	}                                                              \
     }
 
-
 static void
 free_pygobject_data(gpointer data, gpointer user_data)
 {
@@ -170,7 +169,6 @@ caja_python_object_get_property_pages (CajaPropertyPageProvider *provider,
     return ret;
 }
 #undef METHOD_NAME
-
 
 static void
 caja_python_object_property_page_provider_iface_init (CajaPropertyPageProviderIface *iface)
@@ -363,7 +361,6 @@ caja_python_object_column_provider_iface_init (CajaColumnProviderIface *iface)
 	iface->get_columns = caja_python_object_get_columns;
 }
 
-
 #define METHOD_NAME "cancel_update"
 static void
 caja_python_object_cancel_update (CajaInfoProvider 		*provider,
@@ -418,7 +415,6 @@ caja_python_object_update_file_info (CajaInfoProvider 		*provider,
         } while (!h);
         py_handle = caja_python_boxed_new (_PyCajaOperationHandle_Type,
                                            h, FALSE);
-
 
 		py_ret = PyObject_CallMethod(object->instance,
 									 METHOD_PREFIX "update_file_info_full", "(NNNN)",

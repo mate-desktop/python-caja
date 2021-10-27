@@ -43,7 +43,6 @@ static gboolean caja_python_init_python(void);
 static GArray *all_types = NULL;
 static GList *all_pyfiles = NULL;
 
-
 /* Caja.OperationHandle value access. */
 static PyObject *
 caja_operationhandle_get_handle(PyGBoxed *self, void *closure)
@@ -73,7 +72,6 @@ static PyGetSetDef caja_operationhandle_handle = {
 	"Operation handle value",
 	NULL
 };
-
 
 static inline gboolean
 np_init_pygobject(void)
