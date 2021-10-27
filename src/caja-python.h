@@ -45,7 +45,6 @@ extern CajaPythonDebug caja_python_debug;
 #define debug_enter_args(x, y) { if (caja_python_debug & CAJA_PYTHON_DEBUG_MISC) \
                                      g_printf("%s: entered " x "\n", __FUNCTION__, y); }
 
-
 CAJA_PYTHON_VAR_DECL PyTypeObject *_PyGtkWidget_Type;
 #define PyGtkWidget_Type (*_PyGtkWidget_Type)
 
