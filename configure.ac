@@ -104,7 +104,7 @@ AS_IF([test "${enable_gtk_doc}" != no],[
     ])
 ])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
   Makefile
   libcaja-python.caja-extension.desktop.in
   examples/Makefile
@@ -114,6 +114,7 @@ AC_OUTPUT([
   docs/reference/entities.docbook
   po/Makefile.in
 ])
+AC_OUTPUT
 
 echo "
 Configure summary:
