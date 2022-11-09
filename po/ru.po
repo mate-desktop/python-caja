@@ -4,14 +4,14 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Alexei Sorokin, 2018
+# XRevan86, 2018
 # monsta <monsta@inbox.ru>, 2018
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: python-caja 1.24.0\n"
+"Project-Id-Version: python-caja 1.26.0\n"
 "Report-Msgid-Bugs-To: https://github.com/mate-desktop/python-caja/issues\n"
-"POT-Creation-Date: 2021-02-15 10:19+0100\n"
+"POT-Creation-Date: 2022-10-29 15:30+0200\n"
 "PO-Revision-Date: 2018-03-12 10:42+0000\n"
 "Last-Translator: monsta <monsta@inbox.ru>, 2018\n"
 "Language-Team: Russian (https://www.transifex.com/mate/teams/13566/ru/)\n"

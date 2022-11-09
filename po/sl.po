@@ -5,14 +5,15 @@
 # 
 # Translators:
 # worm <thewormhole@gmail.com>, 2018
+# Martin Srebotnjak <miles@filmsi.net>, 2021
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: python-caja 1.24.0\n"
+"Project-Id-Version: python-caja 1.26.0\n"
 "Report-Msgid-Bugs-To: https://github.com/mate-desktop/python-caja/issues\n"
-"POT-Creation-Date: 2021-02-15 10:19+0100\n"
+"POT-Creation-Date: 2022-10-29 15:30+0200\n"
 "PO-Revision-Date: 2018-03-12 10:42+0000\n"
-"Last-Translator: worm <thewormhole@gmail.com>, 2018\n"
+"Last-Translator: Martin Srebotnjak <miles@filmsi.net>, 2021\n"
 "Language-Team: Slovenian (https://www.transifex.com/mate/teams/13566/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,4 +27,4 @@ msgstr "Python"
 
 #: libcaja-python.caja-extension.desktop.in:6
 msgid "Allows to use Python extensions"
-msgstr "Dovoli uporabo Pythonovih razširitev"
+msgstr "Dovoli uporabo razširitev Python"
