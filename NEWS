@@ -1,3 +1,12 @@
+### python-caja 1.27.0
+
+  * tx: sync with transifex
+  * tx: update resource
+  * tx: migrate config file
+  * Use a blank line at most
+  * caja-python: do not discard const modifier in PyImport_ImportModuleEx
+  * caja-python: missing g_strdup
+
 ### python-caja 1.26.0
 
   * Translations update
