@@ -19,7 +19,7 @@ class MeldMenuProvider(GObject.GObject, Caja.MenuProvider):
             # Set working directory
             os.chdir(os.path.dirname(files[0].get_location().get_path()))
             
-            # Start Meld with two files or directories
+            # Start Meld with 1..3 files or directories
             for i in range(0, 3):
                 if i >= len(files):
                     break
