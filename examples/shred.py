@@ -1,6 +1,6 @@
 # Examples: https://github.com/mate-desktop/python-caja/tree/master/examples
 #
-# This script adds a new menu `Secure delete` to Caja file browser when
+# This script adds a new menu `Shred` to Caja file browser when
 # right-mouse clicking on one or more selected files or directories.
 # See the used shred command in the statusbar.
 #
@@ -50,7 +50,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
 
     def get_file_items(self, window, files):
         top_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred',
-                                     label='Secure delete',
+                                     label='Shred',
                                      tip='Delete files with the Linux "shred" tool',
                                      icon=self.SHRED_ICON)
 
