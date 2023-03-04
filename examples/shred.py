@@ -2,6 +2,16 @@
 #
 # This script adds a new menu `Secure delete` to Caja file browser when
 # right-mouse clicking on one or more selected files or directories.
+# See the used shred command in the statusbar.
+#
+# WARNING: THIS IS AN EXAMPLE SCRIPT AND THE USER IS RESPONSIBLE
+# FOR SHREDDING THE FULL SSD OR HARD DRIVE WHEN ABSOLUTE SECURITY IS
+# REQUIRED!
+#
+# The Linux tool `shred` is used to shred files by filling files with
+# zero's or random data and removes filenames. Overwriting files
+# multiple times has no effect on SSD's and decreases lifetime. It
+# should be used for mechanical hard drives only.
 #
 # Copy this script to a path defined in $XDG_DATA_DIRS, for example:
 #   ~/.local/share/caja-python/extensions
@@ -47,20 +57,20 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         shred_submenu = Caja.Menu()
         top_menuitem.set_submenu(shred_submenu)
 
-        # Shred 1x zero's
+        # Shred fill zero's
         shred_cmd = 'shred -uz -n 0'
         shred_1x_zero_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred1xZero',
-                                               label='1x zero\'s',
-                                               tip=shred_cmd + ' FILE...',
+                                               label='Fill zero\'s',
+                                               tip=shred_cmd + ' FILE... (NOT SECURE!)',
                                                icon=self.SHRED_ICON)
         shred_1x_zero_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_1x_zero_menuitem)
 
-        # Shred 1x overwrite
+        # Shred fill random
         shred_cmd = 'shred -u -n 0'
-        shred_1x_random_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred1x',
-                                                 label='1x overwrite',
-                                                 tip=shred_cmd + ' FILE...',
+        shred_1x_random_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred1xRandom',
+                                                 label='Fill random',
+                                                 tip=shred_cmd + ' FILE... (NOT SECURE!)',
                                                  icon=self.SHRED_ICON)
         shred_1x_random_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_1x_random_menuitem)
@@ -69,7 +79,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         shred_cmd = 'shred -uz'
         shred_3x_zero_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred3xLastZero',
                                                label='3x overwrite, last zero\'s',
-                                               tip=shred_cmd + ' FILE...',
+                                               tip=shred_cmd + ' FILE... (HDD\'s only!)',
                                                icon=self.SHRED_ICON)
         shred_3x_zero_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_3x_zero_menuitem)
@@ -78,7 +88,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         shred_cmd = 'shred -u'
         shred_3x_random_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred3x',
                                                  label='3x overwrite (Default)',
-                                                 tip=shred_cmd + ' FILE...',
+                                                 tip=shred_cmd + ' FILE... (HDD\'s only!)',
                                                  icon=self.SHRED_ICON)
         shred_3x_random_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_3x_random_menuitem)
