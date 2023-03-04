@@ -67,7 +67,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         shred_submenu.append_item(shred_1x_zero_menuitem)
 
         # Shred fill random
-        shred_cmd = 'shred -u -n 0'
+        shred_cmd = 'shred -u -n 1'
         shred_1x_random_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred1xRandom',
                                                  label='Fill random',
                                                  tip=shred_cmd + ' FILE... (NOT SECURE!)',
