@@ -1,8 +1,11 @@
 # Examples: https://github.com/mate-desktop/python-caja/tree/master/examples
 #
-# This script adds a new menu `Shred` to Caja file browser when
-# right-mouse clicking on one or more selected files or directories.
-# See the used shred command in the statusbar.
+# This script adds a new menu's to Caja file browser:
+# - Shred: when right-mouse clicking on one or more selected files
+#   or directories.
+# - Wipe freespace: when right-mouse clicking on a white area without
+#   selected files or directories.
+# The executed command is shown in the statusbar.
 #
 # WARNING: THIS IS AN EXAMPLE SCRIPT AND THE USER IS RESPONSIBLE
 # FOR SHREDDING THE FULL SSD OR HARD DRIVE WHEN ABSOLUTE SECURITY IS
@@ -25,11 +28,13 @@ from gi.repository import Caja, GObject, Gio, Gtk
 
 class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
     SHRED_ICON = '/usr/share/pixmaps/caja/erase.png'
+    WIPE_CMD = 'dd if=/dev/{} of={} bs=1M'
+    WIPE_FILENAME = 'tmp'
 
     def __init__(self):
         pass
 
-    def menu_activate_cb(self, menu, data):
+    def shred_menu_activate_cb(self, menu, data):
         dialog = Gtk.MessageDialog(
             parent=None,
             flags=0,
@@ -48,6 +53,35 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
             # Start Shred command
             subprocess.check_call(cmd, shell=True)
 
+    def wipe_freepsace_menu_activate_cb(self, menu, data):
+        wipe_path = data['file'].get_location().get_path()
+        wipe_cmd = data['cmd'].replace('of=', 'of={}/'.format(wipe_path))
+        clean_cmd = 'rm {}/{}'.format(wipe_path, self.WIPE_FILENAME)
+
+        # Start wipe freespace command
+        print('Running: {}'.format(wipe_cmd))
+        try:
+            subprocess.check_call(wipe_cmd, shell=True)
+        except:
+            # Ignore disk full error
+            pass
+
+        print('Running: sync')
+        subprocess.check_call('sync', shell=True)
+
+        print('Running: {}'.format(clean_cmd))
+        subprocess.check_call(clean_cmd, shell=True)
+
+        dialog = Gtk.MessageDialog(
+            parent=None,
+            flags=0,
+            message_type=Gtk.MessageType.INFO,
+            buttons=Gtk.ButtonsType.OK,
+            text="Wipe freespace completed!",
+        )
+        response = dialog.run()
+        dialog.destroy()
+
     def get_file_items(self, window, files):
         top_menuitem = Caja.MenuItem(name='ShredMenuProvider::Shred',
                                      label='Shred',
@@ -63,7 +97,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
                                                label='Fill zero\'s',
                                                tip=shred_cmd + ' FILE... (NOT SECURE!)',
                                                icon=self.SHRED_ICON)
-        shred_1x_zero_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
+        shred_1x_zero_menuitem.connect('activate', self.shred_menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_1x_zero_menuitem)
 
         # Shred fill random
@@ -72,7 +106,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
                                                  label='Fill random',
                                                  tip=shred_cmd + ' FILE... (NOT SECURE!)',
                                                  icon=self.SHRED_ICON)
-        shred_1x_random_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
+        shred_1x_random_menuitem.connect('activate', self.shred_menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_1x_random_menuitem)
 
         # Shred 3x overwrite, last zero's
@@ -81,7 +115,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
                                                label='3x overwrite, last zero\'s',
                                                tip=shred_cmd + ' FILE... (HDD\'s only!)',
                                                icon=self.SHRED_ICON)
-        shred_3x_zero_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
+        shred_3x_zero_menuitem.connect('activate', self.shred_menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_3x_zero_menuitem)
 
         # Shred 3x overwrite (default)
@@ -90,10 +124,28 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
                                                  label='3x overwrite (Default)',
                                                  tip=shred_cmd + ' FILE... (HDD\'s only!)',
                                                  icon=self.SHRED_ICON)
-        shred_3x_random_menuitem.connect('activate', self.menu_activate_cb, {'cmd': shred_cmd, 'files': files})
+        shred_3x_random_menuitem.connect('activate', self.shred_menu_activate_cb, {'cmd': shred_cmd, 'files': files})
         shred_submenu.append_item(shred_3x_random_menuitem)
 
         return top_menuitem,
 
     def get_background_items(self, window, file):
-        return None,
+        wipe_zero_cmd = self.WIPE_CMD.format('zero', self.WIPE_FILENAME)
+        wipe_freespace_zero_menuitem = Caja.MenuItem(name='ShredMenuProvider::WipeFreespaceZero',
+                                                     label='Wipe freespace zero\'s',
+                                                     tip='Wipe freespace with command: "{}"'.format(wipe_zero_cmd),
+                                                     icon=self.SHRED_ICON)
+        wipe_freespace_zero_menuitem.connect('activate',
+                                             self.wipe_freepsace_menu_activate_cb,
+                                             {'cmd': wipe_zero_cmd, 'file': file})
+
+        wipe_random_cmd = self.WIPE_CMD.format('random', self.WIPE_FILENAME)
+        wipe_freespace_random_menuitem = Caja.MenuItem(name='ShredMenuProvider::WipeFreespaceRandom',
+                                                       label='Wipe freespace random',
+                                                       tip='Wipe freespace with command: "{}"'.format(wipe_random_cmd),
+                                                       icon=self.SHRED_ICON)
+        wipe_freespace_random_menuitem.connect('activate',
+                                               self.wipe_freepsace_menu_activate_cb,
+                                               {'cmd': wipe_random_cmd, 'file': file})
+
+        return wipe_freespace_zero_menuitem, wipe_freespace_random_menuitem,
