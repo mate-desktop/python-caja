@@ -47,12 +47,35 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         response = dialog.run()
         dialog.destroy()
         if response == Gtk.ResponseType.YES:
-            cmd = data['cmd']
+            files_skipped = False
+            shred_files = ''
             for shred_file in data['files']:
-                cmd += ' "{}"'.format(shred_file.get_location().get_path())
+                file_path = shred_file.get_location().get_path()
+                if os.access(file_path, os.W_OK):
+                    shred_files += ' "{}"'.format(file_path)
+                else:
+                    print('Skip shred file: {}'.format(file_path))
+                    files_skipped = True
 
             # Start Shred command
-            subprocess.check_call(cmd, shell=True)
+            if shred_files:
+                cmd = data['cmd'] + shred_files
+                print('Running: {}'.format(cmd))
+                subprocess.check_call(cmd, shell=True)
+
+            dialog = Gtk.MessageDialog(
+                parent=None,
+                flags=0,
+                message_type=Gtk.MessageType.INFO,
+                buttons=Gtk.ButtonsType.OK,
+                title="Caja shred",
+                text='Shred completed.',
+            )
+            if files_skipped:
+                dialog.format_secondary_text('WARNING: Some files could not be shredded.\nPlease check manually.')
+
+            response = dialog.run()
+            dialog.destroy()
 
     def wipe_freepsace_menu_activate_cb(self, menu, data):
         wipe_path = data['file'].get_location().get_path()
