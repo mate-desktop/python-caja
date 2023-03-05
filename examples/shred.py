@@ -40,6 +40,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
             flags=0,
             message_type=Gtk.MessageType.QUESTION,
             buttons=Gtk.ButtonsType.YES_NO,
+            title="Caja shred",
             text="Are you sure you want to shred selected files?",
         )
         dialog.format_secondary_text("WARNING: This cannot be undone!")
@@ -57,6 +58,20 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         wipe_path = data['file'].get_location().get_path()
         wipe_cmd = data['cmd'].replace('of=', 'of={}/'.format(wipe_path))
         clean_cmd = 'rm {}/{}'.format(wipe_path, self.WIPE_FILENAME)
+
+        # Check if wipe path is writable
+        if not os.access(wipe_path, os.W_OK):
+            dialog = Gtk.MessageDialog(
+                parent=None,
+                flags=0,
+                message_type=Gtk.MessageType.ERROR,
+                buttons=Gtk.ButtonsType.OK,
+                title="Caja wipe freespace",
+                text="Error: Directory is not writable",
+            )
+            response = dialog.run()
+            dialog.destroy()
+            return
 
         # Start wipe freespace command
         print('Running: {}'.format(wipe_cmd))
@@ -77,6 +92,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
             flags=0,
             message_type=Gtk.MessageType.INFO,
             buttons=Gtk.ButtonsType.OK,
+            title="Caja wipe freespace",
             text="Wipe freespace completed!",
         )
         response = dialog.run()
