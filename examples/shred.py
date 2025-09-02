@@ -48,20 +48,21 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
         dialog.destroy()
         if response == Gtk.ResponseType.YES:
             files_skipped = False
-            shred_files = ''
+            shred_files = []
             for shred_file in data['files']:
                 file_path = shred_file.get_location().get_path()
                 if os.access(file_path, os.W_OK):
-                    shred_files += ' "{}"'.format(file_path)
+                    shred_files.append(file_path)
                 else:
                     print('Skip shred file: {}'.format(file_path))
                     files_skipped = True
 
             # Start Shred command
             if shred_files:
-                cmd = data['cmd'] + shred_files
-                print('Running: {}'.format(cmd))
-                subprocess.check_call(cmd, shell=True)
+                shred_args = data['cmd'].split()
+                cmd = shred_args + shred_files
+                print('Running: {}'.format(' '.join(shred_args + ['"{}"'.format(p) for p in shred_files])))
+                subprocess.check_call(cmd)
 
             dialog = Gtk.MessageDialog(
                 parent=None,
@@ -77,10 +78,10 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
             response = dialog.run()
             dialog.destroy()
 
-    def wipe_freepsace_menu_activate_cb(self, menu, data):
+    def wipe_freespace_menu_activate_cb(self, menu, data):
         wipe_path = data['file'].get_location().get_path()
-        wipe_cmd = data['cmd'].replace('of=', 'of={}/'.format(wipe_path))
-        clean_cmd = 'rm {}/{}'.format(wipe_path, self.WIPE_FILENAME)
+        wipe_file = os.path.join(wipe_path, self.WIPE_FILENAME)
+        wipe_cmd = data['cmd'].replace('of=' + self.WIPE_FILENAME, 'of=' + wipe_file).split()
 
         # Check if wipe path is writable
         if not os.access(wipe_path, os.W_OK):
@@ -97,18 +98,18 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
             return
 
         # Start wipe freespace command
-        print('Running: {}'.format(wipe_cmd))
+        print('Running: {}'.format(' '.join(wipe_cmd)))
         try:
-            subprocess.check_call(wipe_cmd, shell=True)
-        except:
+            subprocess.check_call(wipe_cmd)
+        except subprocess.CalledProcessError:
             # Ignore disk full error
             pass
 
         print('Running: sync')
-        subprocess.check_call('sync', shell=True)
+        subprocess.check_call(['sync'])
 
-        print('Running: {}'.format(clean_cmd))
-        subprocess.check_call(clean_cmd, shell=True)
+        print('Running: rm "{}"'.format(wipe_file))
+        subprocess.check_call(['rm', wipe_file])
 
         dialog = Gtk.MessageDialog(
             parent=None,
@@ -175,7 +176,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
                                                      tip='Wipe freespace with command: "{}"'.format(wipe_zero_cmd),
                                                      icon=self.SHRED_ICON)
         wipe_freespace_zero_menuitem.connect('activate',
-                                             self.wipe_freepsace_menu_activate_cb,
+                                             self.wipe_freespace_menu_activate_cb,
                                              {'cmd': wipe_zero_cmd, 'file': file})
 
         wipe_random_cmd = self.WIPE_CMD.format('random', self.WIPE_FILENAME)
@@ -184,7 +185,7 @@ class ShredMenuProvider(GObject.GObject, Caja.MenuProvider):
                                                        tip='Wipe freespace with command: "{}"'.format(wipe_random_cmd),
                                                        icon=self.SHRED_ICON)
         wipe_freespace_random_menuitem.connect('activate',
-                                               self.wipe_freepsace_menu_activate_cb,
+                                               self.wipe_freespace_menu_activate_cb,
                                                {'cmd': wipe_random_cmd, 'file': file})
 
         return wipe_freespace_zero_menuitem, wipe_freespace_random_menuitem,
