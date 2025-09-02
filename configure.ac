@@ -1,4 +1,4 @@
-AC_INIT([python-caja], [1.27.0],
+AC_INIT([python-caja], [1.28.0],
 	[https://github.com/mate-desktop/python-caja/issues],
 	[python-caja], [https://mate-desktop.org])
 
@@ -104,7 +104,7 @@ AS_IF([test "${enable_gtk_doc}" != no],[
     ])
 ])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
   Makefile
   libcaja-python.caja-extension.desktop.in
   examples/Makefile
@@ -114,6 +114,7 @@ AC_OUTPUT([
   docs/reference/entities.docbook
   po/Makefile.in
 ])
+AC_OUTPUT
 
 echo "
 Configure summary:

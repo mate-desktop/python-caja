@@ -1,5 +1,6 @@
 # This example is contributed by Martin Enlund
 import os
+import subprocess
 
 from gi.repository import Caja, GObject, Gio
 
@@ -15,7 +16,7 @@ class OpenTerminalExtension(Caja.MenuProvider, GObject.GObject):
         terminal = self.gsettings[TERMINAL_KEY]
 
         os.chdir(filename)
-        os.system('%s &' % terminal)
+        subprocess.Popen([terminal], cwd=filename)
         
     def menu_activate_cb(self, menu, file):
         self._open_terminal(file)
