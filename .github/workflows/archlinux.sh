@@ -16,12 +16,14 @@ requires=(
 
 # https://gitlab.archlinux.org/archlinux/packaging/packages/python-caja
 requires+=(
+	caja
 	gcc
 	git
 	intltool
 	make
-	which
 	mate-common
+	python-gobject
+	which
 )
 
 infobegin "Update system"
