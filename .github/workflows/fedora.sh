@@ -22,7 +22,7 @@ requires+=(
 	git
 	make
 	mate-common
-	pygobject3-devel
+	python3-gobject-devel
 	python3-devel
 	redhat-rpm-config
 )
