@@ -69,7 +69,9 @@ static GObjectClass *parent_class;
         py_files = PyList_New(0);                                      \
 		for (l = files; l; l = l->next)                                \
 		{                                                              \
-			PyList_Append(py_files, pygobject_new((GObject*)l->data)); \
+			PyObject *item = pygobject_new ((GObject *)l->data);       \
+			PyList_Append(py_files, item);                             \
+			Py_DECREF (item);                                          \
 		}                                                              \
 	}
 
